@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "careconnect",
-    "slug": "careconnect",
+    "slug": "CareConnect",
     "platforms": [
       "ios",
       "android",
@@ -9,12 +9,12 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/app-icon-main.png",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/splash-screen.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#B272A4"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -24,12 +24,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/app-icon-main.png",
+        "backgroundColor": "#B272A4"
       }
     },
     "web": {
-      "favicon": "./assets/logo-version-rose.png"
+      "favicon": "./assets/app-icon-main.png"
     }
   }
 }
