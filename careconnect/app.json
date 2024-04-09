@@ -9,10 +9,10 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/app-icon-main.png",
+    "icon": "./assets/icons/app-icon-main.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash-screen.png",
+      "image": "./assets/images/splash-screen.png",
       "resizeMode": "cover",
       "backgroundColor": "#B272A4"
     },
@@ -24,12 +24,23 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/app-icon-main.png",
+        "foregroundImage": "./assets/icons/app-icon-main.png",
         "backgroundColor": "#B272A4"
       }
     },
     "web": {
-      "favicon": "./assets/app-icon-main.png"
-    }
+      "favicon": "./assets/icons/app-icon-main.png"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/Sabon.ttf", "./assets/fonts/SabonBold.ttf", "./assets/fonts/SabonItalic.ttf", "./assets/fonts/SabonBoldItalic.ttf"]
+        }
+      ]
+    ]
   }
 }
