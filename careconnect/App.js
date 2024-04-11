@@ -1,24 +1,22 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-
-import * as SplashScreen from 'expo-splash-screen';
-import { useFonts } from 'expo-font';
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import React, { useCallback, useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 SplashScreen.preventAutoHideAsync(); // Keep splash screen visible until we are ready to hide it
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
-    'FiraSansMedium': require('./assets/fonts/FiraSans-Medium.ttf'),
-    'FiraSansMediumItalic': require('./assets/fonts/FiraSans-MediumItalic.ttf'),
-    'FiraSansRegular': require('./assets/fonts/FiraSans-Regular.ttf'),
-    'FiraSansSemiBold': require('./assets/fonts/FiraSans-SemiBold.ttf'),
-    'FiraSansSemiBoldItalic': require('./assets/fonts/FiraSans-SemiBoldItalic.ttf'),
-    'FiraSansThin': require('./assets/fonts/FiraSans-Thin.ttf'),
-    'FiraSansThinItalic': require('./assets/fonts/FiraSans-ThinItalic.ttf')
+    FiraSansMedium: require("./assets/fonts/FiraSans-Medium.ttf"),
+    FiraSansMediumItalic: require("./assets/fonts/FiraSans-MediumItalic.ttf"),
+    FiraSansRegular: require("./assets/fonts/FiraSans-Regular.ttf"),
+    FiraSansSemiBold: require("./assets/fonts/FiraSans-SemiBold.ttf"),
+    FiraSansSemiBoldItalic: require("./assets/fonts/FiraSans-SemiBoldItalic.ttf"),
+    FiraSansThin: require("./assets/fonts/FiraSans-Thin.ttf"),
+    FiraSansThinItalic: require("./assets/fonts/FiraSans-ThinItalic.ttf"),
   });
 
   useEffect(() => {
@@ -44,13 +42,12 @@ export default function App() {
   if (!appIsReady || !fontsLoaded) {
     return null;
   }
-  
 
   return (
     <SafeAreaProvider>
       <View style={styles.container} onLayout={onLayoutRootView}>
-        <Text style={styles.FiraSansSemiBold} >We are readyyyyyyy</Text>
-        <StatusBar style= "auto" />
+        <Text style={styles.FiraSansSemiBold}>We are readyyyyyyy</Text>
+        <StatusBar style="auto" />
       </View>
     </SafeAreaProvider>
   );
@@ -59,36 +56,36 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#B272A4',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#B272A4",
+    alignItems: "center",
+    justifyContent: "center",
   },
   FiraSansMedium: {
-    fontFamily: 'FiraSansMedium',
+    fontFamily: "FiraSansMedium",
     fontSize: 20,
   },
   FiraSansMediumItalic: {
-    fontFamily: 'FiraSansMediumItalic',
+    fontFamily: "FiraSansMediumItalic",
     fontSize: 20,
   },
   FiraSansRegular: {
-    fontFamily: 'FiraSansRegular',
+    fontFamily: "FiraSansRegular",
     fontSize: 20,
   },
   FiraSansSemiBold: {
-    fontFamily: 'FiraSansSemiBold',
+    fontFamily: "FiraSansSemiBold",
     fontSize: 20,
   },
   FiraSansSemiBoldItalic: {
-    fontFamily: 'FiraSansSemiBoldItalic',
+    fontFamily: "FiraSansSemiBoldItalic",
     fontSize: 20,
   },
   FiraSansThin: {
-    fontFamily: 'FiraSansThin',
+    fontFamily: "FiraSansThin",
     fontSize: 20,
   },
   FiraSansThinItalic: {
-    fontFamily: 'FiraSansThinItalic',
+    fontFamily: "FiraSansThinItalic",
     fontSize: 20,
-  }
+  },
 });

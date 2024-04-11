@@ -1,17 +1,22 @@
+/* eslint-disable prettier/prettier */
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import Constants  from 'expo-constants';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBLRzR4uqoeO7Uc6pOA-3uTNx1PhxL-bb0",
-  authDomain: "careconnect-66481.firebaseapp.com",
-  projectId: "careconnect-66481",
-  storageBucket: "careconnect-66481.appspot.com",
-  messagingSenderId: "9285222114",
-  appId: "1:9285222114:web:631966364d7e7650d268bb"
+  apiKey: Constants.manifest?.extra?.firebaseApiKey,
+  authDomain: Constants.manifest?.extra?.firebaseAuthDomain,
+  projectId: Constants.manifest?.extra?.firebaseProjectId,
+  storageBucket: Constants.manifest?.extra?.firebaseStorageBucket,
+  messagingSenderId: Constants.manifest?.extra?.firebaseMessagingSenderId,
+  appId: Constants.manifest?.extra?.firebaseAppId,
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+export default app;

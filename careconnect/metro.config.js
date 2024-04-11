@@ -1,6 +1,7 @@
-const { getDefaultConfig } = require('expo/metro-config');
+/* eslint-env node */
+const { getDefaultConfig } = require("expo/metro-config");
 
 const config = getDefaultConfig(__dirname);
-config.resolver.sourceExts.push('cjs');
+config.resolver.sourceExts.push("cjs");
 
 module.exports = config;
