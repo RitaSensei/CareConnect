@@ -38,7 +38,15 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Sabon.ttf", "./assets/fonts/SabonBold.ttf", "./assets/fonts/SabonItalic.ttf", "./assets/fonts/SabonBoldItalic.ttf"]
+          "fonts": [
+                    "./assets/fonts/FiraSans-Medium.ttf",
+                    "./assets/fonts/FiraSans-MediumItalic.ttf",
+                    "./assets/fonts/FiraSans-Regular.ttf",
+                    "./assets/fonts/FiraSans-SemiBold.ttf",
+                    "./assets/fonts/FiraSans-SemiBoldItalic.ttf",
+                    "./assets/fonts/FiraSans-Thin.ttf",
+                    "./assets/fonts/FiraSans-ThinItalic.ttf"
+                  ]
         }
       ]
     ]

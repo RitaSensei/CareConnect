@@ -12,10 +12,13 @@ SplashScreen.preventAutoHideAsync(); // Keep splash screen visible until we are 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
-    'Sabon': require('./assets/fonts/Sabon.ttf'),
-    'SabonBold': require('./assets/fonts/SabonBold.ttf'),
-    'SabonItalic': require('./assets/fonts/SabonItalic.ttf'),
-    'SabonBoldItalic': require('./assets/fonts/SabonBoldItalic.ttf'),
+    'FiraSansMedium': require('./assets/fonts/FiraSans-Medium.ttf'),
+    'FiraSansMediumItalic': require('./assets/fonts/FiraSans-MediumItalic.ttf'),
+    'FiraSansRegular': require('./assets/fonts/FiraSans-Regular.ttf'),
+    'FiraSansSemiBold': require('./assets/fonts/FiraSans-SemiBold.ttf'),
+    'FiraSansSemiBoldItalic': require('./assets/fonts/FiraSans-SemiBoldItalic.ttf'),
+    'FiraSansThin': require('./assets/fonts/FiraSans-Thin.ttf'),
+    'FiraSansThinItalic': require('./assets/fonts/FiraSans-ThinItalic.ttf')
   });
 
   useEffect(() => {
@@ -46,7 +49,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <View style={styles.container} onLayout={onLayoutRootView}>
-        <Text style={styles.SabonBold} >We are readyyyyyyy</Text>
+        <Text style={styles.FiraSansSemiBold} >We are readyyyyyyy</Text>
         <StatusBar style= "auto" />
       </View>
     </SafeAreaProvider>
@@ -60,20 +63,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  Sabon: {
-    fontFamily: 'Sabon',
+  FiraSansMedium: {
+    fontFamily: 'FiraSansMedium',
     fontSize: 20,
   },
-  SabonBold: {
-    fontFamily: 'SabonBold',
+  FiraSansMediumItalic: {
+    fontFamily: 'FiraSansMediumItalic',
     fontSize: 20,
   },
-  SabonItalic: {
-    fontFamily: 'SabonItalic',
+  FiraSansRegular: {
+    fontFamily: 'FiraSansRegular',
     fontSize: 20,
   },
-  SabonBoldItalic: {
-    fontFamily: 'SabonBoldItalic',
+  FiraSansSemiBold: {
+    fontFamily: 'FiraSansSemiBold',
     fontSize: 20,
   },
+  FiraSansSemiBoldItalic: {
+    fontFamily: 'FiraSansSemiBoldItalic',
+    fontSize: 20,
+  },
+  FiraSansThin: {
+    fontFamily: 'FiraSansThin',
+    fontSize: 20,
+  },
+  FiraSansThinItalic: {
+    fontFamily: 'FiraSansThinItalic',
+    fontSize: 20,
+  }
 });
