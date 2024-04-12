@@ -34,3 +34,10 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+#Firebase
+firebase/privateKey.json
+
+#eslint
+.eslintrc.js
+.prettierrc

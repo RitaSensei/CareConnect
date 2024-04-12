@@ -15,6 +15,7 @@ export default {
       backgroundColor: "#B272A4",
     },
     assetBundlePatterns: ["**/*"],
+    scheme: "careconnect",
     ios: {
       supportsTablet: true,
     },
@@ -26,15 +27,28 @@ export default {
     },
     web: {
       favicon: "./assets/icons/app-icon-main.png",
+      bundler: "metro",
     },
     updates: {
       fallbackToCacheTimeout: 0,
     },
     plugins: [
+      ["expo-router"],
       [
         "expo-font",
         {
           fonts: [
+            "./assets/fonts/FiraSans-Black.ttf",
+            "./assets/fonts/FiraSans-BlackItalic.ttf",
+            "./assets/fonts/FiraSans-Bold.ttf",
+            "./assets/fonts/FiraSans-BoldItalic.ttf",
+            "./assets/fonts/FiraSans-ExtraBold.ttf",
+            "./assets/fonts/FiraSans-ExtraBoldItalic.ttf",
+            "./assets/fonts/FiraSans-ExtraLight.ttf",
+            "./assets/fonts/FiraSans-ExtraLightItalic.ttf",
+            "./assets/fonts/FiraSans-Italic.ttf",
+            "./assets/fonts/FiraSans-Light.ttf",
+            "./assets/fonts/FiraSans-LightItalic.ttf",
             "./assets/fonts/FiraSans-Medium.ttf",
             "./assets/fonts/FiraSans-MediumItalic.ttf",
             "./assets/fonts/FiraSans-Regular.ttf",
