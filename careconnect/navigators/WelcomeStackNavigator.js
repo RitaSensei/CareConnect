@@ -11,7 +11,7 @@ const WelcomeStackNavigator = () => {
       }}
       initialRouteName="Welcome"
     >
-      <WelcomeStack.Screen name="Welcome" component={WelcomeScreen} />
+      <WelcomeStack.Screen name="Welcome Page" component={WelcomeScreen} />
     </WelcomeStack.Navigator>
   );
 };

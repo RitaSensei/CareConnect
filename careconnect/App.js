@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from "react";
 // import { Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import WelcomeStackNavigator from "./navigators/WelcomeStackNavigator";
+import RootStackNavigator from "./navigators/RootStackNavigator";
 
 import { fonts } from "./assets/index";
 // import styles from "./styles";
@@ -47,7 +47,7 @@ export default function App() {
           onLayoutRootView();
         }}
       >
-        <WelcomeStackNavigator />
+        <RootStackNavigator />
       </NavigationContainer>
     </SafeAreaProvider>
   );
