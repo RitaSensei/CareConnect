@@ -33,7 +33,7 @@ To get started with fsNav, follow these steps:
 1. Navigate to the project directory:
 
    ```bash
-   cd project_dir_name
+   cd careconnect
    ```
 1. Install the dependencies:
 
@@ -49,9 +49,10 @@ This will start the Expo development server. You can run the app on an emulator/
 The project structure is organized as follows:
 
 - **screens/**: Individual screens of the application.
-   - **components/**: Reusable React components.
-- **nav/**: Navigation configuration with React Navigation.
-- **firebaseServices/**: Firebase services and other utility functions.
+- **services/**:
+- **components/**: Reusable React components.
+- **navigators/**: Navigation configuration with React Navigation.
+- **firebase/**: Firebase services and other utility functions.
 - **App.js**: Entry point of the application.
 
 Feel free to explore and modify the code as needed.
@@ -64,7 +65,7 @@ Make sure to configure the following:
 ### Firebase Configuration:
 
 1. Create a Firebase project and obtain the configuration details.
-2. Update the Firebase configuration in `/path_to_firebase.js`.
+2. Update the Firebase configuration in `firebase/firebaseConfig.js`.
 
 
 ## Features
@@ -87,7 +88,7 @@ Make sure to configure the following:
 
 ### UI Components
 
-Various UI components such as Text, Button, and SafeAreaView are used for layout and interaction.
+Various UI components such as Text, TextInput, Button, and SafeAreaView are used for layout and interaction.
 
 
 ## Conclusion
