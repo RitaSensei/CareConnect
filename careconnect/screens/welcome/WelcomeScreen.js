@@ -19,17 +19,14 @@ const WelcomeScreen = ({ navigation }) => {
         </Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("AuthScreen", { screen: "Signin" })}
+          onPress={() => navigation.navigate("AuthScreen", { screen: "Signin Page" })}
         >
           <Text style={styles.buttonText}>
             Let's get started{"\t"}
             <AntDesign name="arrowright" size={18} color="#ffffff" />
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("AuthScreen", { screen: "Signup" })}
-        >
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("")}>
           <Text style={styles.buttonText}>
             Go unregistered{"\t"}
             <AntDesign name="arrowright" size={18} color="#ffffff" />

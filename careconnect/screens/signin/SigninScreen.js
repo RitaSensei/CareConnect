@@ -4,7 +4,7 @@ import { TextInput, Button } from "react-native-paper";
 
 import styles from "./styles";
 
-const SigninScreen = () => {
+const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false); // Add this line to handle errors for email field.
   const [password, setPassword] = useState("");
@@ -23,10 +23,6 @@ const SigninScreen = () => {
 
   const handleForgotPassword = () => {
     // Handle forgot password logic here
-  };
-
-  const handleSignUp = () => {
-    // Handle sign up logic here
   };
 
   return (
@@ -78,7 +74,10 @@ const SigninScreen = () => {
           <Text style={styles.signinButtonText}>Login</Text>
         </Button>
       </View>
-      <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+      <TouchableOpacity
+        style={styles.signUpButton}
+        onPress={() => navigation.navigate("AuthScreen", { screen: "Signup Page" })}
+      >
         <Text style={styles.signUpText}>Don't have a account? Sign up</Text>
       </TouchableOpacity>
     </View>
