@@ -69,10 +69,13 @@ const styles = StyleSheet.create({
     marginBottom: 300,
     bottom: -100,
   },
-  signUpText: {
+  otherOptionsText: {
     fontFamily: "FiraSansMedium",
     fontSize: 16,
     color: "#ffffff",
+  },
+  visitorButton: {
+    bottom: 160,
   },
   errorText: {
     fontFamily: "FiraSansRegular",

@@ -26,7 +26,10 @@ const WelcomeScreen = ({ navigation }) => {
             <AntDesign name="arrowright" size={18} color="#ffffff" />
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("")}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Visitor", { screen: "Visitor Home Page" })}
+        >
           <Text style={styles.buttonText}>
             Go unregistered{"\t"}
             <AntDesign name="arrowright" size={18} color="#ffffff" />

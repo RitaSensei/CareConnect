@@ -78,7 +78,23 @@ const SigninScreen = ({ navigation }) => {
         style={styles.signUpButton}
         onPress={() => navigation.navigate("AuthScreen", { screen: "Signup Page" })}
       >
-        <Text style={styles.signUpText}>Don't have a account? Sign up</Text>
+        <Text style={styles.otherOptionsText}>Don't have a account? Sign up</Text>
+      </TouchableOpacity>
+      <Text
+        style={[
+          styles.otherOptionsText,
+          { bottom: 180, color: "#fff", textDecorationLine: "underline" },
+        ]}
+      >
+        Or
+      </Text>
+      <TouchableOpacity
+        style={styles.visitorButton}
+        onPress={() => navigation.navigate("Visitor", { screen: "Visitor Home Page" })}
+      >
+        <Text style={styles.otherOptionsText}>
+          Don't want to create an account? Go as a visitor
+        </Text>
       </TouchableOpacity>
     </View>
   );
