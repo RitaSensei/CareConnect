@@ -5,16 +5,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#afb0b3",
   },
   header: {
     flexDirection: "row",
     // justifyContent: "space-between",
     alignItems: "center",
-    width: "100%",
-    height: 95,
     position: "absolute",
-    bottom: 800,
+    width: "100%",
   },
   logo: {
     resizeMode: "contain",
@@ -25,8 +23,7 @@ const styles = StyleSheet.create({
   },
   signinButton: {
     borderRadius: 10,
-    position: "absolute",
-    // bottom: 400,
+    bottom: 330,
     width: "30%",
   },
   signinButtonText: {

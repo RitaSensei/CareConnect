@@ -11,7 +11,7 @@ const VisitorHomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.header}>
         <Button
           mode="contained-tonal"
           style={styles.signinButton}
