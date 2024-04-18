@@ -8,7 +8,7 @@ export default {
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icons/app-icon-main.png",
-    userInterfaceStyle: "automatic",
+    userInterfaceStyle: "light",
     splash: {
       image: "./assets/images/splash-screen.png",
       resizeMode: "cover",
