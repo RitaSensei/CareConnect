@@ -1,20 +1,138 @@
 import React, { useState } from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, FlatList, SafeAreaView } from "react-native";
 import { Button, Card, Title, Paragraph } from "react-native-paper";
-import { Picker, Colors } from "react-native-ui-lib";
+import { Picker } from "react-native-ui-lib";
 import { ScrollView } from "react-native-gesture-handler";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons, MaterialIcons, FontAwesome6 } from "@expo/vector-icons";
 
 import styles from "./styles";
 import { allLocations, allNationalities, allPositions } from "./allOptions";
 
-const profileData = {
-  name: "Mary Gomez",
-  nationality: "Filibino",
-  location: "Tanger, Morocco",
-  experience: "3 yrs",
-  "desired position": "live-in, full-time",
-};
+const profileData = [
+  {
+    profilepic: require("../../../assets/images/nanny_image.png"),
+    name: ["Name", "Mary Gomez"],
+    nationality: ["Nationality", "Filibino"],
+    location: ["Location", "Tanger"],
+    experience: ["Experience", "3 yrs"],
+    "desired position": ["Desired position", "live-in, full-time"],
+    "desired salary": ["Desired salary", "2000 MAD/month"],
+  },
+  {
+    profilepic: require("../../../assets/images/nanny_image.png"),
+    name: ["Name", "Clara Almario"],
+    nationality: ["Nationality", "Chinese"],
+    location: ["Location", "Rabat"],
+    experience: ["Experience", "5 yrs"],
+    "desired position": ["Desired position", "live-out, part-time"],
+    "desired salary": ["Desired salary", "3000 MAD/month"],
+  },
+  {
+    profilepic: require("../../../assets/images/nanny_image.png"),
+    name: ["Name", "Mary Gomez"],
+    nationality: ["Nationality", "Filibino"],
+    location: ["Location", "Tanger"],
+    experience: ["Experience", "3 yrs"],
+    "desired position": ["Desired position", "live-in, full-time"],
+    "desired salary": ["Desired salary", "2000 MAD/month"],
+  },
+  {
+    profilepic: require("../../../assets/images/nanny_image.png"),
+    name: ["Name", "Clara Almario"],
+    nationality: ["Nationality", "Chinese"],
+    location: ["Location", "Rabat"],
+    experience: ["Experience", "5 yrs"],
+    "desired position": ["Desired position", "live-out, part-time"],
+    "desired salary": ["Desired salary", "3000 MAD/month"],
+  },
+  // add more profile data here
+];
+
+const renderProfile = ({ item }) => (
+  <Card style={styles.cardContainer}>
+    <View
+      style={{
+        justifyContent: "space-around",
+        alignItems: "center",
+        flexDirection: "row",
+        flex: 1,
+        width: 200,
+      }}
+    >
+      <View style={styles.cardCover}>
+        <Card.Cover
+          source={item.profilepic}
+          style={{
+            // aspectRatio: 0.4,
+            width: 80,
+            height: 80,
+            // resizeMode: "contain",
+            // overflow: "hidden",
+          }}
+        />
+        <View style={{ flexDirection: "row", alignItems: "center", left: 5, top: 8, width: 90 }}>
+          <FontAwesome6 name="coins" size={16} color="#B272A4" />
+          <Text
+            style={{
+              fontFamily: "FiraSansRegular",
+              fontSize: 11,
+              color: "#000",
+              textAlign: "center",
+              marginLeft: 5,
+            }}
+          >
+            {item["desired salary"][1]}
+          </Text>
+        </View>
+        <View style={{ flexDirection: "row", alignItems: "center", left: 5, top: 15, width: 90 }}>
+          <MaterialIcons name="place" size={16} color="#B272A4" />
+          <Text
+            style={{
+              fontFamily: "FiraSansRegular",
+              fontSize: 11,
+              color: "#000",
+              textAlign: "center",
+              marginLeft: 5,
+            }}
+          >
+            {item["location"][1]}
+          </Text>
+        </View>
+      </View>
+      <View>
+        <Card.Content style={styles.cardContent}>
+          <Paragraph style={styles.nannyName}>
+            <Text>{item.name[1]}</Text>
+          </Paragraph>
+          <Paragraph style={styles.nannyInformations}>
+            {item.nationality[0]} : <Text style={{ color: "#000" }}>{item.nationality[1]}</Text>
+          </Paragraph>
+          <Paragraph style={styles.nannyInformations}>
+            {item.experience[0]} : <Text style={{ color: "#000" }}>{item.experience[1]}</Text>
+          </Paragraph>
+          <Paragraph style={styles.nannyInformations}>
+            {item["desired position"][0]} :{" "}
+            <Text style={{ color: "#000" }}>{item["desired position"][1]}</Text>
+          </Paragraph>
+        </Card.Content>
+      </View>
+    </View>
+    <Card.Actions>
+      <View style={{ flex: 1 }}>
+        <Button
+          mode="contained"
+          style={styles.viewProfileButton}
+          textColor="#fff"
+          buttonColor="#B272A4"
+          rippleColor="#FCD9E0"
+          onPress={() => {}}
+        >
+          <Text style={styles.viewProfileText}>View Profil</Text>
+        </Button>
+      </View>
+    </Card.Actions>
+  </Card>
+);
 
 const VisitorHomeScreen = () => {
   const [locationState, setLocationState] = useState({
@@ -43,7 +161,7 @@ const VisitorHomeScreen = () => {
         <Text style={styles.title}>Looking for a nanny ?</Text>
         <Text style={styles.subtitle}>Find available nannies and Explore profiles</Text>
       </View>
-      <ScrollView>
+      <ScrollView scrollEnabled={false}>
         <View style={styles.searchBarContainer}>
           <Picker
             placeholder="Location"
@@ -162,62 +280,21 @@ const VisitorHomeScreen = () => {
         </Text>
       </View>
       <View style={styles.catalogHeader}>
-        <Text style={styles.descriptionTitle}>Suggesed Nannies</Text>
+        <Text style={styles.descriptionTitle}>Suggested Nannies</Text>
         <TouchableOpacity>
-          <Text
-            style={{
-              fontFamily: "FiraSansMedium",
-              fontSize: 18,
-              color: "#FA89B8",
-              marginLeft: 140,
-            }}
-          >
-            See all
-          </Text>
+          <Text style={styles.seeAllText}>See all</Text>
         </TouchableOpacity>
       </View>
-      <Card
-        style={{
-          bottom: 80,
-          position: "absolute",
-          flexDirection: "column",
-          alignItems: "center",
-          backgroundColor: "#F1E7E8",
-          width: "50%",
-        }}
-      >
-        <View style={{ flexDirection: "row" }}>
-          <Card.Cover source="D:/Ghita/2A/S4/PFA/nanny_image.png" style={{ aspectRatio: 0.5 }} />
-          <Card.Content style={{ paddingBottom: 10 }}>
-            <Title style={styles.nannyName}>{profileData.name}</Title>
-            <Paragraph style={styles.nannyInformations}>
-              Nationality: <Text style={{ color: "#000" }}>{profileData.nationality}</Text>
-            </Paragraph>
-            <Paragraph style={styles.nannyInformations}>
-              Location: <Text style={{ color: "#000" }}>{profileData.location}</Text>
-            </Paragraph>
-            <Paragraph style={styles.nannyInformations}>
-              Experience: <Text style={{ color: "#000" }}>{profileData.experience}</Text>
-            </Paragraph>
-            <Paragraph style={styles.nannyInformations}>
-              Desired position:{" "}
-              <Text style={{ color: "#000" }}>{profileData["desired position"]}</Text>
-            </Paragraph>
-          </Card.Content>
-        </View>
-        <Card.Actions>
-          <View style={{ alignContent: "center", flex: 1, bottom: 10 }}>
-            <Button
-              mode="contained-tonal"
-              style={styles.viewProfileButton}
-              textColor="#fff"
-              buttonColor="#B272A4"
-            >
-              <Text style={styles.viewProfileText}>View Profil</Text>
-            </Button>
-          </View>
-        </Card.Actions>
-      </Card>
+      <SafeAreaView style={{ flex: 1, position: "absolute", bottom: 160, height: 205 }}>
+        <FlatList
+          data={profileData.slice(0, 6)}
+          renderItem={renderProfile}
+          keyExtractor={(item, index) => index.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+        />
+      </SafeAreaView>
     </View>
   );
 };
