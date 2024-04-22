@@ -9,11 +9,12 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     backgroundColor: "#B272A4",
     width: "100%",
-    height: 110,
+    height: 380,
     position: "absolute",
+    top: -270,
   },
   searchBarContainer: {
     position: "relative",
@@ -38,12 +39,13 @@ const styles = StyleSheet.create({
     fontFamily: "FiraSansBold",
     fontSize: 24,
     color: "#fff",
+    marginTop: 285,
   },
   subtitle: {
     fontFamily: "FiraSansSemiBold",
     fontSize: 16,
     color: "#fff",
-    marginBottom: 20,
+    marginBottom: 40,
   },
   content: {
     // justifyContent: "space-between",

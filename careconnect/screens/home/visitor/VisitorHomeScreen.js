@@ -101,13 +101,8 @@ const VisitorHomeScreen = () => {
   });
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1, height: "100%" }}
-      maximumZoomScale={1.5}
-      showsVerticalScrollIndicator
-      scrollEventThrottle={5}
-    >
-      <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} maximumZoomScale={1.5}>
         <View style={styles.container}>
           <View style={styles.subContainer}>
             <Text style={styles.title}>Looking for a nanny ?</Text>
@@ -163,8 +158,8 @@ const VisitorHomeScreen = () => {
             />
           </SafeAreaView>
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
