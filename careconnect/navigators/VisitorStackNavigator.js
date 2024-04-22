@@ -17,11 +17,11 @@ const VisitorTabNavigator = () => {
       }}
       tabBarOptions={{
         activeTintColor: "#FA89B8",
-        tabStyle: { height: 80 },
+        tabStyle: { height: 75 },
       }}
       appearance={{
         topPadding: 10,
-        bottomPadding: -5,
+        bottomPadding: -8,
         activeTabBackgrounds: "#F1E7E8",
         whenInactiveShow: "icon-only",
         dotSize: "small",
@@ -38,7 +38,7 @@ const VisitorTabNavigator = () => {
             fontSize: 10,
           },
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={20} color={color} />
+            <Ionicons name={focused ? "home" : "home-outline"} size={18} color={color} />
           ),
         }}
       />
@@ -52,7 +52,7 @@ const VisitorTabNavigator = () => {
             fontSize: 10,
           },
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "settings" : "settings-outline"} size={20} color={color} />
+            <Ionicons name={focused ? "settings" : "settings-outline"} size={18} color={color} />
           ),
         }}
       />

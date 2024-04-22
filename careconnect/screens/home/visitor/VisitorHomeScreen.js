@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { Text, View, Image, TouchableOpacity, FlatList, SafeAreaView } from "react-native";
-import { Button, Card, Title, Paragraph } from "react-native-paper";
-import { Picker } from "react-native-ui-lib";
-import { ScrollView } from "react-native-gesture-handler";
-import { Entypo, Ionicons, MaterialIcons, FontAwesome6 } from "@expo/vector-icons";
+import React, { useState, useEffect, useRef } from "react";
+import { Text, View, TouchableOpacity, FlatList, SafeAreaView, ScrollView } from "react-native";
+// import { ScrollView } from "react-native-gesture-handler";
+import { Entypo } from "@expo/vector-icons";
 
 import styles from "./styles";
-import { allLocations, allNationalities, allPositions } from "./allOptions";
+import { renderProfile } from "../../../components/ProfilesSlider";
+import { MultipleFilters } from "../../../components/ProfilesSearchBar";
+import { Testimonials } from "../../../components/Testimonials";
 
 const profileData = [
   {
     profilepic: require("../../../assets/images/nanny_image.png"),
     name: ["Name", "Mary Gomez"],
-    nationality: ["Nationality", "Filibino"],
+    nationality: ["Nationality", "Filipino"],
     location: ["Location", "Tanger"],
     experience: ["Experience", "3 yrs"],
     "desired position": ["Desired position", "live-in, full-time"],
@@ -30,7 +30,7 @@ const profileData = [
   {
     profilepic: require("../../../assets/images/nanny_image.png"),
     name: ["Name", "Mary Gomez"],
-    nationality: ["Nationality", "Filibino"],
+    nationality: ["Nationality", "Filipino"],
     location: ["Location", "Tanger"],
     experience: ["Experience", "3 yrs"],
     "desired position": ["Desired position", "live-in, full-time"],
@@ -48,254 +48,123 @@ const profileData = [
   // add more profile data here
 ];
 
-const renderProfile = ({ item }) => (
-  <Card style={styles.cardContainer}>
-    <View
-      style={{
-        justifyContent: "space-around",
-        alignItems: "center",
-        flexDirection: "row",
-        flex: 1,
-        width: 200,
-      }}
-    >
-      <View style={styles.cardCover}>
-        <Card.Cover
-          source={item.profilepic}
-          style={{
-            // aspectRatio: 0.4,
-            width: 80,
-            height: 80,
-            // resizeMode: "contain",
-            // overflow: "hidden",
-          }}
-        />
-        <View style={{ flexDirection: "row", alignItems: "center", left: 5, top: 8, width: 90 }}>
-          <FontAwesome6 name="coins" size={16} color="#B272A4" />
-          <Text
-            style={{
-              fontFamily: "FiraSansRegular",
-              fontSize: 11,
-              color: "#000",
-              textAlign: "center",
-              marginLeft: 5,
-            }}
-          >
-            {item["desired salary"][1]}
-          </Text>
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center", left: 5, top: 15, width: 90 }}>
-          <MaterialIcons name="place" size={16} color="#B272A4" />
-          <Text
-            style={{
-              fontFamily: "FiraSansRegular",
-              fontSize: 11,
-              color: "#000",
-              textAlign: "center",
-              marginLeft: 5,
-            }}
-          >
-            {item["location"][1]}
-          </Text>
-        </View>
-      </View>
-      <View>
-        <Card.Content style={styles.cardContent}>
-          <Paragraph style={styles.nannyName}>
-            <Text>{item.name[1]}</Text>
-          </Paragraph>
-          <Paragraph style={styles.nannyInformations}>
-            {item.nationality[0]} : <Text style={{ color: "#000" }}>{item.nationality[1]}</Text>
-          </Paragraph>
-          <Paragraph style={styles.nannyInformations}>
-            {item.experience[0]} : <Text style={{ color: "#000" }}>{item.experience[1]}</Text>
-          </Paragraph>
-          <Paragraph style={styles.nannyInformations}>
-            {item["desired position"][0]} :{" "}
-            <Text style={{ color: "#000" }}>{item["desired position"][1]}</Text>
-          </Paragraph>
-        </Card.Content>
-      </View>
-    </View>
-    <Card.Actions>
-      <View style={{ flex: 1 }}>
-        <Button
-          mode="contained"
-          style={styles.viewProfileButton}
-          textColor="#fff"
-          buttonColor="#B272A4"
-          rippleColor="#FCD9E0"
-          onPress={() => {}}
-        >
-          <Text style={styles.viewProfileText}>View Profil</Text>
-        </Button>
-      </View>
-    </Card.Actions>
-  </Card>
-);
+const clientsTestimonials = [
+  {
+    description: `Thank you so much CareConnect for helping me find a very good employer. Godbless to your Page and more Power. Continue helping to those people who has been looking for job and God Will return it in thousand folds`,
+    name: "Hiba Mekkaoui",
+    clientType: "Nanny",
+  },
+  {
+    description: `Highly highly highly recommend CareConnect! We found our nanny in less than 2 weeks. With new profiles added almost daily it was a much more positive experience than going though an agency. Very happy with the overall experience, thank you!`,
+    name: "Ghita Loukili",
+    clientType: "Employer",
+  },
+  {
+    description: `CareConnect provide very professional services. They brief the candidates properly and go the extra mile to help. Lani is highly supportive and kind.`,
+    name: "Hiba Mekkaoui",
+    clientType: "Nanny",
+  },
+  {
+    description: `Honestly I m writing this my thought to share with all who is searching job like me I thought its difficult to find a job and get good salary but because of CareConnect its so easy and fast . Really thankful once again to CareConnect to make find a job so quick.`,
+    name: "Ghita Loukili",
+    clientType: "Employer",
+  },
+];
+
+const useAutoScroll = ({ itemLength, flatListRef }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentIndex(prevIndex => (prevIndex + 1) % itemLength);
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, [itemLength]);
+
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToIndex({
+        index: currentIndex,
+        animated: true,
+      });
+    }
+  }, [currentIndex, flatListRef]);
+};
 
 const VisitorHomeScreen = () => {
-  const [locationState, setLocationState] = useState({
-    itemsCount: 1,
-    location: undefined,
-    option: undefined,
-    nativePickerValue: "",
+  const flatListRef = useRef(null);
+
+  useAutoScroll({
+    itemLength: clientsTestimonials.length,
+    flatListRef,
   });
 
-  const [nationalityState, setNationalityState] = useState({
-    itemsCount: 1,
-    nationality: undefined,
-    option: undefined,
-    nativePickerValue: "",
-  });
-
-  const [positionState, setPositionState] = useState({
-    itemsCount: 1,
-    position: undefined,
-    option: undefined,
-    nativePickerValue: "",
-  });
   return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.title}>Looking for a nanny ?</Text>
-        <Text style={styles.subtitle}>Find available nannies and Explore profiles</Text>
-      </View>
-      <ScrollView scrollEnabled={false}>
-        <View style={styles.searchBarContainer}>
-          <Picker
-            placeholder="Location"
-            placeholderTextColor="#000"
-            useWheelPicker
-            enableModalBlur={false}
-            value={locationState.nativePickerValue}
-            onChange={nativePickerValue =>
-              setLocationState({ ...locationState, nativePickerValue })
-            }
-            trailingAccessory={
-              <Entypo
-                name={locationState.pickerOpen ? "chevron-up" : "chevron-down"}
-                size={22}
-                color="black"
-              />
-            }
-            onPress={() => setLocationState({ pickerOpen: !locationState.pickerOpen })}
-            topBarProps={{
-              doneLabel: "Done",
-              cancelLabel: "Cancel",
-            }}
-            fieldType="form"
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, height: "100%" }}
+      maximumZoomScale={1.5}
+      showsVerticalScrollIndicator
+      scrollEventThrottle={5}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.subContainer}>
+            <Text style={styles.title}>Looking for a nanny ?</Text>
+            <Text style={styles.subtitle}>Find available nannies and Explore profiles</Text>
+          </View>
+          <MultipleFilters />
+          <View style={styles.content}>
+            <Text style={styles.descriptionTitle}>Our services</Text>
+            <Text style={styles.description}>
+              Experience the ease of connecting with educators through our inviting AI-powered
+              application, designed with intuitive features and personalized matching algorithms.
+              Explore trusted recommendations from previous employers and enjoy privacy-conscious
+              video exchanges for a seamless experience.
+            </Text>
+          </View>
+          <View style={styles.catalogHeader}>
+            <View style={styles.horizontalBar} />
+            <Text style={styles.descriptionTitle}>Suggested Nannies</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAllText}>
+                See all
+                <Entypo name="chevron-right" size={18} color="#FA89B8" />
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <SafeAreaView
+            style={{ flex: 1, position: "absolute", bottom: 155, left: 5, height: 205 }}
           >
-            {allLocations.map(option => (
-              <Picker.Item
-                key={option.value}
-                value={option.value}
-                label={option.label}
-                disabled={option.disabled}
-              />
-            ))}
-          </Picker>
-          <Picker
-            placeholder="Nationality"
-            placeholderTextColor="#000"
-            useWheelPicker
-            enableModalBlur={false}
-            value={nationalityState.nativePickerValue}
-            onChange={nativePickerValue => setNationalityState({ nativePickerValue })}
-            trailingAccessory={
-              <Entypo
-                name={nationalityState.pickerOpen ? "chevron-up" : "chevron-down"}
-                size={22}
-                color="black"
-              />
-            }
-            onPress={() => setNationalityState({ pickerOpen: !nationalityState.pickerOpen })}
-            topBarProps={{
-              doneLabel: "Done",
-              cancelLabel: "Cancel",
-            }}
-            fieldType="form"
+            <FlatList
+              data={profileData.slice(0, 6)}
+              renderItem={renderProfile}
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled
+            />
+          </SafeAreaView>
+          <View style={styles.testimonialsHeader}>
+            <Text style={styles.testimonialsTitle}>Testimonials</Text>
+          </View>
+          <SafeAreaView
+            style={{ flex: 1, position: "absolute", bottom: -145, left: 5, height: 250 }}
           >
-            {allNationalities.map(option => (
-              <Picker.Item
-                key={option.value}
-                value={option.value}
-                label={option.label}
-                disabled={option.disabled}
-                style={{
-                  color:
-                    option.value === nationalityState.nativePickerValue ? "#ff0000" : "#000000",
-                }}
-              />
-            ))}
-          </Picker>
-          <Picker
-            placeholder="Position"
-            placeholderTextColor="#000"
-            useWheelPicker
-            enableModalBlur={false}
-            value={positionState.nativePickerValue}
-            onChange={nativePickerValue => setPositionState({ nativePickerValue })}
-            trailingAccessory={
-              <Entypo
-                name={positionState.pickerOpen ? "chevron-up" : "chevron-down"}
-                size={22}
-                color="black"
-              />
-            }
-            onPress={() => setPositionState({ pickerOpen: !positionState.pickerOpen })}
-            topBarProps={{
-              doneLabel: "Done",
-              cancelLabel: "Cancel",
-            }}
-            fieldType="form"
-          >
-            {allPositions.map(option => (
-              <Picker.Item
-                key={option.value}
-                value={option.value}
-                label={option.label}
-                disabled={option.disabled}
-                style={{
-                  color: option.value === positionState.nativePickerValue ? "#ff0000" : "#000000",
-                }}
-              />
-            ))}
-          </Picker>
-          <Ionicons
-            name="search-circle"
-            size={38}
-            color="#FA89B8"
-            style={{ marginHorizontal: -10 }}
-          />
+            <FlatList
+              data={clientsTestimonials}
+              renderItem={Testimonials}
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              alwaysBounceVertical={false}
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled
+              ref={flatListRef}
+            />
+          </SafeAreaView>
         </View>
-      </ScrollView>
-      <View style={styles.content}>
-        <Text style={styles.descriptionTitle}>Our services</Text>
-        <Text style={styles.description}>
-          Experience the ease of connecting with educators through our inviting AI-powered
-          application, designed with intuitive features and personalized matching algorithms.
-          Explore trusted recommendations from previous employers and enjoy privacy-conscious video
-          exchanges for a seamless experience.
-        </Text>
-      </View>
-      <View style={styles.catalogHeader}>
-        <Text style={styles.descriptionTitle}>Suggested Nannies</Text>
-        <TouchableOpacity>
-          <Text style={styles.seeAllText}>See all</Text>
-        </TouchableOpacity>
-      </View>
-      <SafeAreaView style={{ flex: 1, position: "absolute", bottom: 160, height: 205 }}>
-        <FlatList
-          data={profileData.slice(0, 6)}
-          renderItem={renderProfile}
-          keyExtractor={(item, index) => index.toString()}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-        />
       </SafeAreaView>
-    </View>
+    </ScrollView>
   );
 };
 
