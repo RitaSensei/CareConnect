@@ -3,16 +3,10 @@ import { Text, View, Image } from "react-native";
 import { Button } from "react-native-paper";
 
 import styles from "./styles";
+import { NewAccountNanny } from "../creating account/nanny/NewAccountNanny";
+import { NewAccountParent } from "../creating account/parent/NewAccountParent";
 
-const SignupScreen = () => {
-  const handleNannySignup = () => {
-    // alert(`You are signing up as a nanny.`);
-  };
-
-  const handleParentSignup = () => {
-    // alert(`You are signing up as a nanny.`);
-  };
-
+const SignupScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/images/register-screen-bg.png")} style={styles.bg} />
@@ -24,7 +18,7 @@ const SignupScreen = () => {
             style={styles.button}
             buttonColor="#F1E7E8"
             textColor="#B272A4"
-            onPress={handleNannySignup}
+            onPress={() => navigation.navigate("NewAccount", { screen: "Nanny New Account Page" })}
           >
             <Text style={styles.buttonText}>Nanny - I am looking for a job</Text>
           </Button>
@@ -38,7 +32,7 @@ const SignupScreen = () => {
             style={[styles.button, { bottom: 160 }]}
             buttonColor="#F1E7E8"
             textColor="#B272A4"
-            onPress={handleParentSignup}
+            onPress={() => navigation.navigate("NewAccount", { screen: "Parent New Account Page" })}
           >
             <Text style={styles.buttonText}>Family - I am looking for a nanny</Text>
           </Button>

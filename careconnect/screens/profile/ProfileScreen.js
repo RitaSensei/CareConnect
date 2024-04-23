@@ -3,8 +3,8 @@ import { View, Text, TextInput, Button, TouchableOpacity, Image } from "react-na
 
 import styles from "./styles";
 
-const UserHomeScreen = () => {
+const ProfileScreen = () => {
   return <View />;
 };
 
-export default UserHomeScreen;
+export default ProfileScreen;

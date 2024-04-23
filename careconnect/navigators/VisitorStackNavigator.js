@@ -65,10 +65,6 @@ const VisitorStackNavigator = ({ navigation }) => {
     return <Image style={styles.logo} source={require("../assets/icons/logo-no-bg.png")} />;
   };
 
-  const handleLogin = () => {
-    // Handle login logic here
-  };
-
   return (
     <Stack.Navigator
       screenOptions={{

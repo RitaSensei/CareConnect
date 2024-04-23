@@ -5,7 +5,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 
 import styles from "../screens/home/visitor/styles";
-import { allLocations, allNationalities, allPositions } from "../screens/home/visitor/allOptions";
+import { allLocations, allNationalities, allPositions } from "../utils/allOptions";
 
 export const MultipleFilters = () => {
   const [locationState, setLocationState] = useState({

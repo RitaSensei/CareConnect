@@ -29,6 +29,8 @@ const WelcomeScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("Visitor", { screen: "Visitor Home Page" })}
+          // temporary just to test
+          // onPress={() => navigation.navigate("User", { screen: "User Home Page" })}
         >
           <Text style={styles.buttonText}>
             Go unregistered{"\t"}
