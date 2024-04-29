@@ -3,7 +3,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import NewAccountNannyScreen from "../screens/creating account/nanny/NewAccountNanny";
 import NewAccountParentScreen from "../screens/creating account/parent/NewAccountParent";
 
-import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const NewAccountStack = createStackNavigator();

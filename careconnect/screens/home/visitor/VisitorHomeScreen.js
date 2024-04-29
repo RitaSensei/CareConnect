@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Text, View, TouchableOpacity, FlatList, SafeAreaView, ScrollView } from "react-native";
-// import { ScrollView } from "react-native-gesture-handler";
 import { Entypo } from "@expo/vector-icons";
 
 import styles from "./styles";
 import { renderProfile } from "../../../components/ProfilesSlider";
-import { MultipleFilters } from "../../../components/ProfilesSearchBar";
 import { Testimonials } from "../../../components/Testimonials";
-import { Button } from "react-native-paper";
 
 const profileData = [
   {
@@ -93,7 +90,7 @@ const useAutoScroll = ({ itemLength, flatListRef }) => {
   }, [currentIndex, flatListRef]);
 };
 
-const VisitorHomeScreen = () => {
+const VisitorHomeScreen = ({ navigation }) => {
   const flatListRef = useRef(null);
 
   useAutoScroll({
@@ -117,7 +114,7 @@ const VisitorHomeScreen = () => {
             <Text style={styles.title}>Looking for a nanny ?</Text>
             <Text style={styles.subtitle}>Find available nannies and Explore profiles</Text>
           </View>
-          <MultipleFilters />
+          {/* <MultipleFilters /> */}
           <View style={{ flex: 1, alignItems: "center", position: "absolute" }}>
             <View style={styles.content}>
               <Text style={styles.descriptionTitle}>Our services</Text>
@@ -131,14 +128,18 @@ const VisitorHomeScreen = () => {
             <View style={styles.catalogHeader}>
               <View style={styles.horizontalBar} />
               <Text style={styles.descriptionTitle}>Suggested Nannies</Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("NannyHiring", { screen: "Nannies Catalog Page" })
+                }
+              >
                 <Text style={styles.seeAllText}>
                   See all
                   <Entypo name="chevron-right" size={18} color="#FA89B8" />
                 </Text>
               </TouchableOpacity>
             </View>
-            <SafeAreaView style={{ flex: 1, top: 210, marginLeft: 5, height: 205 }}>
+            <SafeAreaView style={{ flex: 1, marginTop: 10, marginLeft: 5, height: 205 }}>
               <FlatList
                 data={profileData.slice(0, 6)}
                 renderItem={renderProfile}
@@ -154,7 +155,7 @@ const VisitorHomeScreen = () => {
             <SafeAreaView
               style={{
                 flex: 1,
-                top: 240,
+                marginTop: 15,
                 marginStart: 5,
                 height: 250,
               }}

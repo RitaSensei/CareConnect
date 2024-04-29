@@ -1,4 +1,5 @@
 export const allLocations = [
+  { label: "Location", value: "location" },
   { label: "Agadir", value: "agadir" },
   { label: "Ain Aouda", value: "ain-aouda" },
   { label: "Al Hoceima", value: "al-hoceima" },
@@ -76,6 +77,7 @@ export const allLocations = [
 ];
 
 export const allNationalities = [
+  { label: "Nationality", value: "nationality" },
   { label: "Afghan", value: "afghan" },
   { label: "Albanian", value: "albanian" },
   { label: "Algerian", value: "algerian" },
@@ -268,6 +270,7 @@ export const allNationalities = [
 ];
 
 export const allPositions = [
+  { label: "Position", value: "position" },
   { label: "Full-time", value: "full-time" },
   { label: "Part-time", value: "part-time" },
   { label: "Live-in", value: "live-in" },

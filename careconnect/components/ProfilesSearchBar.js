@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Picker } from "react-native-ui-lib";
 import { ScrollView } from "react-native-gesture-handler";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 
-import styles from "../screens/home/visitor/styles";
 import { allLocations, allNationalities, allPositions } from "../utils/allOptions";
 
 export const MultipleFilters = () => {
@@ -13,6 +12,7 @@ export const MultipleFilters = () => {
     location: undefined,
     option: undefined,
     nativePickerValue: "",
+    pickerOpen: false,
   });
 
   const [nationalityState, setNationalityState] = useState({
@@ -20,6 +20,7 @@ export const MultipleFilters = () => {
     nationality: undefined,
     option: undefined,
     nativePickerValue: "",
+    pickerOpen: false,
   });
 
   const [positionState, setPositionState] = useState({
@@ -27,7 +28,9 @@ export const MultipleFilters = () => {
     position: undefined,
     option: undefined,
     nativePickerValue: "",
+    pickerOpen: false,
   });
+
   return (
     <ScrollView scrollEnabled={false}>
       <View style={styles.searchBarContainer}>
@@ -37,7 +40,9 @@ export const MultipleFilters = () => {
           useWheelPicker
           enableModalBlur={false}
           value={locationState.nativePickerValue}
-          onChange={nativePickerValue => setLocationState({ ...locationState, nativePickerValue })}
+          onChange={nativePickerValue =>
+            setLocationState(prevState => ({ ...prevState, nativePickerValue }))
+          }
           trailingAccessory={
             <Entypo
               name={locationState.pickerOpen ? "chevron-up" : "chevron-down"}
@@ -45,12 +50,14 @@ export const MultipleFilters = () => {
               color="black"
             />
           }
-          onPress={() => setLocationState({ pickerOpen: !locationState.pickerOpen })}
+          onPress={() =>
+            setLocationState(prevState => ({ ...prevState, pickerOpen: !prevState.pickerOpen }))
+          }
           topBarProps={{
             doneLabel: "Done",
             cancelLabel: "Cancel",
           }}
-          fieldType="form"
+          fieldType="filter"
         >
           {allLocations.map(option => (
             <Picker.Item
@@ -58,6 +65,9 @@ export const MultipleFilters = () => {
               value={option.value}
               label={option.label}
               disabled={option.disabled}
+              style={{
+                color: option.value === locationState.nativePickerValue ? "#ff0000" : "#000000",
+              }}
             />
           ))}
         </Picker>
@@ -67,7 +77,9 @@ export const MultipleFilters = () => {
           useWheelPicker
           enableModalBlur={false}
           value={nationalityState.nativePickerValue}
-          onChange={nativePickerValue => setNationalityState({ nativePickerValue })}
+          onChange={nativePickerValue =>
+            setNationalityState(prevState => ({ ...prevState, nativePickerValue }))
+          }
           trailingAccessory={
             <Entypo
               name={nationalityState.pickerOpen ? "chevron-up" : "chevron-down"}
@@ -75,12 +87,14 @@ export const MultipleFilters = () => {
               color="black"
             />
           }
-          onPress={() => setNationalityState({ pickerOpen: !nationalityState.pickerOpen })}
+          onPress={() =>
+            setNationalityState(prevState => ({ ...prevState, pickerOpen: !prevState.pickerOpen }))
+          }
           topBarProps={{
             doneLabel: "Done",
             cancelLabel: "Cancel",
           }}
-          fieldType="form"
+          fieldType="filter"
         >
           {allNationalities.map(option => (
             <Picker.Item
@@ -100,7 +114,9 @@ export const MultipleFilters = () => {
           useWheelPicker
           enableModalBlur={false}
           value={positionState.nativePickerValue}
-          onChange={nativePickerValue => setPositionState({ nativePickerValue })}
+          onChange={nativePickerValue =>
+            setPositionState(prevState => ({ ...prevState, nativePickerValue }))
+          }
           trailingAccessory={
             <Entypo
               name={positionState.pickerOpen ? "chevron-up" : "chevron-down"}
@@ -108,12 +124,14 @@ export const MultipleFilters = () => {
               color="black"
             />
           }
-          onPress={() => setPositionState({ pickerOpen: !positionState.pickerOpen })}
+          onPress={() =>
+            setPositionState(prevState => ({ ...prevState, pickerOpen: !prevState.pickerOpen }))
+          }
           topBarProps={{
             doneLabel: "Done",
             cancelLabel: "Cancel",
           }}
-          fieldType="form"
+          fieldType="filter"
         >
           {allPositions.map(option => (
             <Picker.Item
@@ -137,3 +155,25 @@ export const MultipleFilters = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  searchBarContainer: {
+    flex: 1,
+    height: 55,
+    width: 370,
+    top: 10,
+    marginBottom: 15,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    borderWidth: 4,
+    borderColor: "#FA89B8",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    placeholder: {
+      color: "lightgray",
+      fontSize: 14,
+    },
+  },
+});
