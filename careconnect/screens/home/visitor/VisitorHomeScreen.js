@@ -7,6 +7,7 @@ import styles from "./styles";
 import { renderProfile } from "../../../components/ProfilesSlider";
 import { MultipleFilters } from "../../../components/ProfilesSearchBar";
 import { Testimonials } from "../../../components/Testimonials";
+import { Button } from "react-native-paper";
 
 const profileData = [
   {
@@ -101,62 +102,75 @@ const VisitorHomeScreen = () => {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} maximumZoomScale={1.5}>
+    <SafeAreaView style={{ flexGrow: 1 }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        maximumZoomScale={1.5}
+        directionalLockEnabled
+        showsHorizontalScrollIndicator={false}
+        alwaysBounceHorizontal={false}
+        bouncesZoom={false}
+        overScrollMode="never"
+      >
         <View style={styles.container}>
           <View style={styles.subContainer}>
             <Text style={styles.title}>Looking for a nanny ?</Text>
             <Text style={styles.subtitle}>Find available nannies and Explore profiles</Text>
           </View>
           <MultipleFilters />
-          <View style={styles.content}>
-            <Text style={styles.descriptionTitle}>Our services</Text>
-            <Text style={styles.description}>
-              Experience the ease of connecting with educators through our inviting AI-powered
-              application, designed with intuitive features and personalized matching algorithms.
-              Explore trusted recommendations from previous employers and enjoy privacy-conscious
-              video exchanges for a seamless experience.
-            </Text>
-          </View>
-          <View style={styles.catalogHeader}>
-            <View style={styles.horizontalBar} />
-            <Text style={styles.descriptionTitle}>Suggested Nannies</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAllText}>
-                See all
-                <Entypo name="chevron-right" size={18} color="#FA89B8" />
+          <View style={{ flex: 1, alignItems: "center", position: "absolute" }}>
+            <View style={styles.content}>
+              <Text style={styles.descriptionTitle}>Our services</Text>
+              <Text style={styles.description}>
+                Experience the ease of connecting with educators through our inviting AI-powered
+                application, designed with intuitive features and personalized matching algorithms.
+                Explore trusted recommendations from previous employers and enjoy privacy-conscious
+                video exchanges for a seamless experience.
               </Text>
-            </TouchableOpacity>
+            </View>
+            <View style={styles.catalogHeader}>
+              <View style={styles.horizontalBar} />
+              <Text style={styles.descriptionTitle}>Suggested Nannies</Text>
+              <TouchableOpacity>
+                <Text style={styles.seeAllText}>
+                  See all
+                  <Entypo name="chevron-right" size={18} color="#FA89B8" />
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <SafeAreaView style={{ flex: 1, top: 210, marginLeft: 5, height: 205 }}>
+              <FlatList
+                data={profileData.slice(0, 6)}
+                renderItem={renderProfile}
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled
+              />
+            </SafeAreaView>
+            <View style={styles.testimonialsHeader}>
+              <Text style={styles.testimonialsTitle}>Testimonials</Text>
+            </View>
+            <SafeAreaView
+              style={{
+                flex: 1,
+                top: 240,
+                marginStart: 5,
+                height: 250,
+              }}
+            >
+              <FlatList
+                data={clientsTestimonials}
+                renderItem={Testimonials}
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                alwaysBounceVertical={false}
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled
+                ref={flatListRef}
+              />
+            </SafeAreaView>
           </View>
-          <SafeAreaView
-            style={{ flex: 1, position: "absolute", bottom: 155, left: 5, height: 205 }}
-          >
-            <FlatList
-              data={profileData.slice(0, 6)}
-              renderItem={renderProfile}
-              keyExtractor={(item, index) => index.toString()}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              pagingEnabled
-            />
-          </SafeAreaView>
-          <View style={styles.testimonialsHeader}>
-            <Text style={styles.testimonialsTitle}>Testimonials</Text>
-          </View>
-          <SafeAreaView
-            style={{ flex: 1, position: "absolute", bottom: -145, left: 5, height: 250 }}
-          >
-            <FlatList
-              data={clientsTestimonials}
-              renderItem={Testimonials}
-              keyExtractor={(item, index) => index.toString()}
-              horizontal
-              alwaysBounceVertical={false}
-              showsHorizontalScrollIndicator={false}
-              pagingEnabled
-              ref={flatListRef}
-            />
-          </SafeAreaView>
         </View>
       </ScrollView>
     </SafeAreaView>

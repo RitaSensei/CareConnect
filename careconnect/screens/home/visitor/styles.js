@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#f5f5f5",
+    height: 850,
   },
   subContainer: {
     alignItems: "center",
@@ -18,7 +19,6 @@ const styles = StyleSheet.create({
   },
   searchBarContainer: {
     position: "relative",
-    // flex: 1,
     width: 360,
     height: 55,
     backgroundColor: "#fff",
@@ -48,9 +48,8 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   content: {
-    // justifyContent: "space-between",
     flexDirection: "column",
-    position: "absolute",
+    // position: "absolute",
     top: 155,
     paddingHorizontal: 18,
   },
@@ -69,20 +68,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    position: "relative",
-    bottom: 370,
-    left: 5,
+    position: "absolute",
+    top: 310,
   },
   seeAllText: {
     fontFamily: "FiraSansMedium",
     fontSize: 18,
     color: "#FA89B8",
-    marginLeft: 120,
+    marginLeft: 105,
   },
   cardContainer: {
-    // flex: 1,
-    // bottom: 80,
-    // position: "absolute",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#fff",
@@ -102,15 +97,12 @@ const styles = StyleSheet.create({
     top: -2,
   },
   cardContent: {
-    // flex: 1,
-    // width: "80",
     justifyContent: "space-evenly",
     alignSelf: "center",
     paddingBottom: 5,
     left: 38,
     bottom: 5,
     marginLeft: 18,
-    // marginBottom: 20,
   },
   nannyName: {
     fontFamily: "FiraSansMedium",
@@ -130,7 +122,6 @@ const styles = StyleSheet.create({
     height: 40,
     position: "absolute",
     alignSelf: "center",
-    // top: 100,
   },
   viewProfileText: {
     fontFamily: "FiraSansSemiBold",
@@ -140,8 +131,7 @@ const styles = StyleSheet.create({
   testimonialsHeader: {
     flexDirection: "row",
     alignItems: "center",
-    position: "absolute",
-    bottom: 120,
+    top: 220,
   },
   testimonialsTitle: {
     fontFamily: "FiraSansMedium",
