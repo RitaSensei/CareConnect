@@ -276,3 +276,8 @@ export const allPositions = [
   { label: "Live-in", value: "live-in" },
   { label: "Live-out", value: "live-out" },
 ];
+
+export const allAges = [];
+for (let age = 21; age <= 45; age++) {
+  allAges.push({ label: `${age}`, value: `${age}` });
+}

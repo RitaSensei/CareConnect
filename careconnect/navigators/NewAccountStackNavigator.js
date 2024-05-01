@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import NewAccountNannyScreen from "../screens/creating account/nanny/NewAccountNanny";
+import NewAccountNanny1Screen from "../screens/creating account/nanny/NewAccountNanny1";
+import NewAccountNanny2Screen from "../screens/creating account/nanny/NewAccountNanny2";
 import NewAccountParentScreen from "../screens/creating account/parent/NewAccountParent";
 
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
@@ -27,7 +28,8 @@ const NewAccountStackNavigator = () => {
         // ),
       }}
     >
-      <NewAccountStack.Screen name="Nanny New Account Page" component={NewAccountNannyScreen} />
+      <NewAccountStack.Screen name="Nanny New Account Page 1" component={NewAccountNanny1Screen} />
+      <NewAccountStack.Screen name="Nanny New Account Page 2" component={NewAccountNanny2Screen} />
       <NewAccountStack.Screen name="Parent New Account Page" component={NewAccountParentScreen} />
     </NewAccountStack.Navigator>
   );

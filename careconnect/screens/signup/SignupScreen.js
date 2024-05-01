@@ -3,7 +3,7 @@ import { Text, View, Image } from "react-native";
 import { Button } from "react-native-paper";
 
 import styles from "./styles";
-import { NewAccountNanny } from "../creating account/nanny/NewAccountNanny";
+import { NewAccountNanny } from "../creating account/nanny/NewAccountNanny1";
 import { NewAccountParent } from "../creating account/parent/NewAccountParent";
 
 const SignupScreen = ({ navigation }) => {
@@ -18,7 +18,9 @@ const SignupScreen = ({ navigation }) => {
             style={styles.button}
             buttonColor="#F1E7E8"
             textColor="#B272A4"
-            onPress={() => navigation.navigate("NewAccount", { screen: "Nanny New Account Page" })}
+            onPress={() =>
+              navigation.navigate("NewAccount", { screen: "Nanny New Account Page 1" })
+            }
           >
             <Text style={styles.buttonText}>Nanny - I am looking for a job</Text>
           </Button>

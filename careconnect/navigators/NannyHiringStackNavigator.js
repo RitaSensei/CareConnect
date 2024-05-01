@@ -2,7 +2,6 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import NanniesCatalogScreen from "../screens/nannies catalog/NanniesCatalogScreen";
-import VisitorHomeScreen from "../screens/home/visitor/VisitorHomeScreen";
 import SettingsScreen from "../screens/settings/SettingsScreen";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 

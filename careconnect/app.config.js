@@ -59,6 +59,12 @@ export default {
           ],
         },
       ],
+      [
+        "expo-image-picker",
+        {
+          photosPermission: "The app accesses your photos",
+        },
+      ],
     ],
     extra: {
       firebaseApiKey: process.env.FIREBASE_API_KEY,

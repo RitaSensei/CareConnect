@@ -32,6 +32,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.73.6",
     "react-native-animated-nav-tab-bar": "^3.1.10",
+    "react-native-credit-card-input": "^0.4.1",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-paper": "^5.12.3",
     "react-native-reanimated": "~3.6.2",
@@ -41,7 +42,8 @@
     "react-native-ui-lib": "^7.20.3",
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "~0.19.6",
-    "react-navigation-header-buttons": "^11.2.1"
+    "react-navigation-header-buttons": "^11.2.1",
+    "expo-image-picker": "~14.7.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -32,34 +32,41 @@ const SigninScreen = ({ navigation }) => {
         <View style={styles.formContainer}>
           <Text style={styles.title}>Welcome back !</Text>
           <Text style={styles.subtitle}>Login to your account</Text>
-          <TextInput
-            label="Email"
-            placeholder="Enter your email address"
-            left={<TextInput.Icon icon="email" color="#8a8686" />}
-            style={styles.input}
-            value={email}
-            error={emailError}
-            onChangeText={handleEmailChange}
-          />
-          {emailError && <Text style={styles.errorText}>Please enter a valid email address</Text>}
-          <TextInput
-            secureTextEntry={secureTextEntry}
-            label="Password"
-            placeholder="Enter your password"
-            left={<TextInput.Icon icon="lock" color="#8a8686" />}
-            right={
-              <TextInput.Icon
-                icon={secureTextEntry ? "eye-off" : "eye"}
-                onPress={() => {
-                  setSecureTextEntry(!secureTextEntry);
-                  return false;
-                }}
-              />
-            }
-            style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-          />
+          <View style={{ position: "absolute", top: 110 }}>
+            <TextInput
+              label="Email"
+              placeholder="Enter your email address"
+              mode="outlined"
+              left={<TextInput.Icon icon="email" color="#BDBDBD" />}
+              style={styles.input}
+              outlineColor="#BDBDBD"
+              value={email}
+              error={emailError}
+              onChangeText={handleEmailChange}
+            />
+            {emailError && <Text style={styles.errorText}>Please enter a valid email address</Text>}
+            <TextInput
+              secureTextEntry={secureTextEntry}
+              label="Password"
+              placeholder="Enter your password"
+              mode="outlined"
+              left={<TextInput.Icon icon="lock" color="#BDBDBD" />}
+              outlineColor="#BDBDBD"
+              right={
+                <TextInput.Icon
+                  icon={secureTextEntry ? "eye-off" : "eye"}
+                  color="#BDBDBD"
+                  onPress={() => {
+                    setSecureTextEntry(!secureTextEntry);
+                    return false;
+                  }}
+                />
+              }
+              style={styles.input}
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
           <TouchableOpacity style={styles.forgotPasswordButton} onPress={handleForgotPassword}>
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
@@ -83,7 +90,7 @@ const SigninScreen = ({ navigation }) => {
       <Text
         style={[
           styles.otherOptionsText,
-          { bottom: 180, color: "#fff", textDecorationLine: "underline" },
+          { bottom: 190, color: "#fff", textDecorationLine: "underline" },
         ]}
       >
         Or
