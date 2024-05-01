@@ -1,23 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView, SafeAreaView } from "react-native";
+import { View, Text, Image, ScrollView, SafeAreaView } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Picker } from "react-native-ui-lib";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 
 import styles from "../styles";
-import { allLocations, allNationalities, allAges } from "../../../utils/allOptions";
+import { allLocations, allNationalities } from "../../../utils/allOptions";
 
 const NewAccountNanny1Screen = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [age, setAge] = useState({
-    itemsCount: 1,
-    age: undefined,
-    option: undefined,
-    nativePickerValue: "",
-    pickerOpen: false,
-  });
+  const [date, setDate] = useState(new Date());
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [mobileNumber, setMobileNumber] = useState("");
   const [mobileNumberError, setMobileNumberError] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -31,6 +27,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureTextEntryBeta, setSecureTextEntryBeta] = useState(true);
   const [emptyField, setEmptyField] = useState(false);
+  const [validDateField, setValidDateField] = useState(false);
   const [currentCity, setCurrentCity] = useState({
     itemsCount: 1,
     location: undefined,
@@ -45,6 +42,26 @@ const NewAccountNanny1Screen = ({ navigation }) => {
     nativePickerValue: "",
     pickerOpen: false,
   });
+
+  const showDatePicker = () => {
+    setDatePickerVisible(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisible(false);
+  };
+
+  const handleConfirmDate = date => {
+    if (date > new Date(2003, 11, 31) || date < new Date(1974, 0, 1)) {
+      setEmptyField(true);
+      setValidDateField(false);
+    } else {
+      setEmptyField(false);
+      setValidDateField(true);
+    }
+    setDate(date);
+    hideDatePicker();
+  };
 
   const handleMobileNumberChange = number => {
     const mobileNumberRegex = /^[0-9]{10}$/;
@@ -113,7 +130,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
     if (
       firstName.trim() !== "" &&
       lastName.trim() !== "" &&
-      age.nativePickerValue &&
+      date !== new Date() &&
       mobileNumber.trim() !== "" &&
       currentCity.nativePickerValue &&
       nationality.nativePickerValue &&
@@ -148,6 +165,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
           <TextInput
             label="First Name"
             placeholder="Enter your first name"
+            contentStyle={{ fontFamily: "FiraSansRegular", fontSize: 16 }}
             inputMode="text"
             mode="outlined"
             outlineColor="#BDBDBD"
@@ -174,6 +192,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             outlineColor="#BDBDBD"
             activeOutlineColor="#FA89B8"
             placeholderTextColor="#BDBDBD"
+            contentStyle={{ fontFamily: "FiraSansRegular", fontSize: 16 }}
             inputMode="text"
             mode="outlined"
             value={lastName}
@@ -191,49 +210,31 @@ const NewAccountNanny1Screen = ({ navigation }) => {
           {emptyField && lastName.trim() === "" && (
             <Text style={styles.errorText}>Please enter your last name</Text>
           )}
-          <Picker
-            placeholder="Age"
-            style={[
-              styles.picker,
-              emptyField && !age.nativePickerValue && styles.errorPicker, // Apply error style if the field is empty
-            ]}
-            useWheelPicker
-            enableModalBlur={false}
-            value={age.nativePickerValue}
-            onChange={nativePickerValue =>
-              setAge(prevState => ({ ...prevState, nativePickerValue }))
-            }
-            trailingAccessory={
-              <Entypo
-                name={age.pickerOpen ? "chevron-up" : "chevron-down"}
-                size={30}
-                color="black"
-                style={{ position: "absolute", marginStart: 290, top: 10 }}
-              />
-            }
-            onPress={() =>
-              setAge(prevState => ({ ...prevState, pickerOpen: !prevState.pickerOpen }))
-            }
-            topBarProps={{
-              doneLabel: "Done",
-              cancelLabel: "Cancel",
-            }}
-            fieldType="filter"
+          <Button
+            mode="contained-tonal"
+            style={styles.imageUploadButton}
+            buttonColor="#fff"
+            textColor="#000"
+            title="Date of Birth"
+            contentStyle={{ flexDirection: "row-reverse", justifyContent: "space-between" }}
+            onPress={showDatePicker}
+            icon={() => <Ionicons name="calendar-number" size={24} color="#000" />}
+            error={emptyField && !validDateField}
           >
-            {allAges.map(option => (
-              <Picker.Item
-                key={option.value}
-                value={option.value}
-                label={option.label}
-                disabled={option.disabled}
-                style={{
-                  color: option.value === age.nativePickerValue ? "#ff0000" : "#000000",
-                }}
-              />
-            ))}
-          </Picker>
-          {emptyField && !age.nativePickerValue && (
-            <Text style={styles.errorText}>Please select your age</Text>
+            <Text style={styles.imageUploadButtonText}>{date.toLocaleDateString()}</Text>
+          </Button>
+          <DateTimePickerModal
+            date={date}
+            isVisible={datePickerVisible}
+            maximumDate={new Date(2003, 11, 31)}
+            minimumDate={new Date(1974, 0, 1)}
+            mode="date"
+            onConfirm={handleConfirmDate}
+            onCancel={hideDatePicker}
+            textColor="#000"
+          />
+          {emptyField && !validDateField && (
+            <Text style={styles.errorText}>Please select a valid date of birth</Text>
           )}
           <Picker
             placeholder="Nationality"
@@ -285,6 +286,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             outlineColor="#BDBDBD"
             activeOutlineColor="#FA89B8"
             placeholderTextColor="#BDBDBD"
+            contentStyle={{ fontFamily: "FiraSansRegular", fontSize: 16 }}
             inputMode="tel"
             mode="outlined"
             value={mobileNumber}
@@ -371,6 +373,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
               outlineColor="#BDBDBD"
               activeOutlineColor="#FA89B8"
               placeholderTextColor="#BDBDBD"
+              contentStyle={{ fontFamily: "FiraSansRegular", fontSize: 16 }}
               inputMode="email"
               mode="outlined"
               value={email}
@@ -393,6 +396,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
               outlineColor="#BDBDBD"
               activeOutlineColor="#FA89B8"
               placeholderTextColor="#BDBDBD"
+              contentStyle={{ fontFamily: "FiraSansRegular", fontSize: 16 }}
               mode="outlined"
               left={<TextInput.Icon icon="lock" color="#8a8686" />}
               right={
@@ -422,6 +426,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             secureTextEntry={secureTextEntryBeta}
             label="Confirm Password"
             placeholder="Enter your password to confirm"
+            contentStyle={{ fontFamily: "FiraSansRegular", fontSize: 16 }}
             outlineColor="#BDBDBD"
             activeOutlineColor="#FA89B8"
             placeholderTextColor="#BDBDBD"
