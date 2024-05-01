@@ -6,18 +6,11 @@ import { Picker } from "react-native-ui-lib";
 import { Entypo } from "@expo/vector-icons";
 
 import styles from "../styles";
-import { allLocations, allNationalities, allAges } from "../../../utils/allOptions";
+import { allLocations } from "../../../utils/allOptions";
 
 const NewAccountParentScreen = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [age, setAge] = useState({
-    itemsCount: 1,
-    age: undefined,
-    option: undefined,
-    nativePickerValue: "",
-    pickerOpen: false,
-  });
   const [mobileNumber, setMobileNumber] = useState("");
   const [mobileNumberError, setMobileNumberError] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -34,13 +27,6 @@ const NewAccountParentScreen = ({ navigation }) => {
   const [currentCity, setCurrentCity] = useState({
     itemsCount: 1,
     location: undefined,
-    option: undefined,
-    nativePickerValue: "",
-    pickerOpen: false,
-  });
-  const [nationality, setNationality] = useState({
-    itemsCount: 1,
-    nationality: undefined,
     option: undefined,
     nativePickerValue: "",
     pickerOpen: false,
@@ -113,10 +99,8 @@ const NewAccountParentScreen = ({ navigation }) => {
     if (
       firstName.trim() !== "" &&
       lastName.trim() !== "" &&
-      age.nativePickerValue &&
       mobileNumber.trim() !== "" &&
       currentCity.nativePickerValue &&
-      nationality.nativePickerValue &&
       profilePhoto &&
       email.trim() !== "" &&
       password.trim() !== "" &&
@@ -125,7 +109,7 @@ const NewAccountParentScreen = ({ navigation }) => {
       !passwordError &&
       !confirmPasswordError
     ) {
-      navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
+      navigation.navigate("User", { screen: "User Home Page" });
     } else {
       const profilePhotoError = !profilePhoto; // Check if profile photo is empty
       setEmptyField(true);
@@ -190,50 +174,6 @@ const NewAccountParentScreen = ({ navigation }) => {
           />
           {emptyField && lastName.trim() === "" && (
             <Text style={styles.errorText}>Please enter your last name</Text>
-          )}
-          <Picker
-            placeholder="Nationality"
-            style={[
-              styles.picker,
-              emptyField && !nationality.nativePickerValue && styles.errorPicker, // Apply error style if the field is empty
-            ]}
-            useWheelPicker
-            enableModalBlur={false}
-            value={nationality.nativePickerValue}
-            onChange={nativePickerValue =>
-              setNationality(prevState => ({ ...prevState, nativePickerValue }))
-            }
-            trailingAccessory={
-              <Entypo
-                name={nationality.pickerOpen ? "chevron-up" : "chevron-down"}
-                size={30}
-                color="black"
-                style={{ position: "absolute", marginStart: 290, top: 10 }}
-              />
-            }
-            onPress={() =>
-              setNationality(prevState => ({ ...prevState, pickerOpen: !prevState.pickerOpen }))
-            }
-            topBarProps={{
-              doneLabel: "Done",
-              cancelLabel: "Cancel",
-            }}
-            fieldType="filter"
-          >
-            {allNationalities.map(option => (
-              <Picker.Item
-                key={option.value}
-                value={option.value}
-                label={option.label}
-                disabled={option.disabled}
-                style={{
-                  color: option.value === nationality.nativePickerValue ? "#ff0000" : "#000000",
-                }}
-              />
-            ))}
-          </Picker>
-          {emptyField && !nationality.nativePickerValue && (
-            <Text style={styles.errorText}>Please select your nationality</Text>
           )}
           <TextInput
             label="Phone Number"
