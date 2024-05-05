@@ -18,6 +18,7 @@ export default {
     scheme: "careconnect",
     ios: {
       supportsTablet: true,
+      usesIcloudStorage: true,
     },
     android: {
       adaptiveIcon: {
@@ -63,6 +64,12 @@ export default {
         "expo-image-picker",
         {
           photosPermission: "The app accesses your photos",
+        },
+      ],
+      [
+        "expo-document-picker",
+        {
+          iCloudContainerEnvironment: "Production",
         },
       ],
     ],

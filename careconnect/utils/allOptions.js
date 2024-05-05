@@ -1,5 +1,4 @@
 export const allLocations = [
-  { label: "Location", value: "location" },
   { label: "Agadir", value: "agadir" },
   { label: "Ain Aouda", value: "ain-aouda" },
   { label: "Al Hoceima", value: "al-hoceima" },
@@ -77,7 +76,6 @@ export const allLocations = [
 ];
 
 export const allNationalities = [
-  { label: "Nationality", value: "nationality" },
   { label: "Afghan", value: "afghan" },
   { label: "Albanian", value: "albanian" },
   { label: "Algerian", value: "algerian" },
@@ -270,9 +268,50 @@ export const allNationalities = [
 ];
 
 export const allPositions = [
-  { label: "Position", value: "position" },
   { label: "Full-time", value: "full-time" },
   { label: "Part-time", value: "part-time" },
   { label: "Live-in", value: "live-in" },
   { label: "Live-out", value: "live-out" },
+];
+
+export const allYearsOfExperience = [
+  { label: "<1 year", value: "<1 year" },
+  { label: "1-2 years", value: "1-2-years" },
+  { label: "3-5 years", value: "3-5-years" },
+  { label: "6-8 years", value: "6-8-years" },
+  { label: "9-10 years", value: "9-10-years" },
+  { label: "More than 10 years", value: "more-than-10-years" },
+];
+
+export const allChildAgeIntervals = [
+  { label: "Newborn (0-6 months)", value: "newborn" },
+  { label: "Infant (7-12 months)", value: "infant" },
+  { label: "Toddler (1-3 years)", value: "toddler" },
+  { label: "Preschooler (4-6 years)", value: "preschooler" },
+  { label: "School Age (7-12 years)", value: "school-age" },
+  { label: "Teenager (13+ years)", value: "teenager" },
+];
+
+export const allCertifications = [
+  { label: "CPR and First Aid", value: "cpr-first-aid" },
+  { label: "Childcare Training Course", value: "childcare-training" },
+  { label: "Early Childhood Education (ECE)", value: "ece" },
+  { label: "Nanny Certification", value: "nanny-certification" },
+  { label: "Water Safety Instructor (WSI)", value: "water-safety-instructor" },
+  { label: "Special Needs Care Training", value: "special-needs-care" },
+  { label: "Food Safety and Handling", value: "food-safety" },
+  { label: "Safe Sleep Practices", value: "safe-sleep" },
+];
+
+export const allQualifications = [
+  { label: "High School Diploma or equivalent", value: "high-school-diploma" },
+  { label: "Child Development Associate (CDA) Credential", value: "cda-credential" },
+  { label: "Certifications in Child CPR and First Aid", value: "certifications-cpr-first-aid" },
+  { label: "Valid Driver's License and Clean Driving Record", value: "drivers-license" },
+];
+
+export const allLanguages = [
+  { label: "English", value: "english" },
+  { label: "French", value: "french" },
+  { label: "Arabic", value: "arabic" },
 ];

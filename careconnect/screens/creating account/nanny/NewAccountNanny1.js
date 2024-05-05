@@ -29,16 +29,12 @@ const NewAccountNanny1Screen = ({ navigation }) => {
   const [emptyField, setEmptyField] = useState(false);
   const [validDateField, setValidDateField] = useState(false);
   const [currentCity, setCurrentCity] = useState({
-    itemsCount: 1,
     location: undefined,
-    option: undefined,
     nativePickerValue: "",
     pickerOpen: false,
   });
   const [nationality, setNationality] = useState({
-    itemsCount: 1,
     nationality: undefined,
-    option: undefined,
     nativePickerValue: "",
     pickerOpen: false,
   });
@@ -246,7 +242,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             enableModalBlur={false}
             value={nationality.nativePickerValue}
             onChange={nativePickerValue =>
-              setNationality(prevState => ({ ...prevState, nativePickerValue }))
+              setNationality(prevState => ({ ...prevState, pickerOpen: false, nativePickerValue }))
             }
             trailingAccessory={
               <Entypo
@@ -256,9 +252,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
                 style={{ position: "absolute", marginStart: 290, top: 10 }}
               />
             }
-            onPress={() =>
-              setNationality(prevState => ({ ...prevState, pickerOpen: !prevState.pickerOpen }))
-            }
+            onPress={() => setNationality(prevState => ({ ...prevState, pickerOpen: true }))}
             topBarProps={{
               doneLabel: "Done",
               cancelLabel: "Cancel",
@@ -310,7 +304,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             enableModalBlur={false}
             value={currentCity.nativePickerValue}
             onChange={nativePickerValue =>
-              setCurrentCity(prevState => ({ ...prevState, nativePickerValue }))
+              setCurrentCity(prevState => ({ ...prevState, pickerOpen: false, nativePickerValue }))
             }
             trailingAccessory={
               <Entypo
@@ -320,9 +314,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
                 style={{ position: "absolute", marginStart: 290, top: 10 }}
               />
             }
-            onPress={() =>
-              setCurrentCity(prevState => ({ ...prevState, pickerOpen: !prevState.pickerOpen }))
-            }
+            onPress={() => setCurrentCity(prevState => ({ ...prevState, pickerOpen: true }))}
             topBarProps={{
               doneLabel: "Done",
               cancelLabel: "Cancel",
@@ -455,7 +447,10 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             style={styles.nextButton}
             buttonColor="#FA89B8"
             textColor="#fff"
-            onPress={handleNext}
+            // onPress={handleNext}
+            onPress={() =>
+              navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" })
+            }
           >
             <Text style={styles.nextButtonText}>Next</Text>
           </Button>

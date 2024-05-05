@@ -25,9 +25,7 @@ const NewAccountParentScreen = ({ navigation }) => {
   const [secureTextEntryBeta, setSecureTextEntryBeta] = useState(true);
   const [emptyField, setEmptyField] = useState(false);
   const [currentCity, setCurrentCity] = useState({
-    itemsCount: 1,
     location: undefined,
-    option: undefined,
     nativePickerValue: "",
     pickerOpen: false,
   });
@@ -95,7 +93,8 @@ const NewAccountParentScreen = ({ navigation }) => {
     }
   };
 
-  const handleNext = () => {
+  const handleRegister = () => {
+    // todo: add the registration logic
     if (
       firstName.trim() !== "" &&
       lastName.trim() !== "" &&
@@ -204,7 +203,7 @@ const NewAccountParentScreen = ({ navigation }) => {
             enableModalBlur={false}
             value={currentCity.nativePickerValue}
             onChange={nativePickerValue =>
-              setCurrentCity(prevState => ({ ...prevState, nativePickerValue }))
+              setCurrentCity(prevState => ({ ...prevState, pickerOpen: false, nativePickerValue }))
             }
             trailingAccessory={
               <Entypo
@@ -214,9 +213,7 @@ const NewAccountParentScreen = ({ navigation }) => {
                 style={{ position: "absolute", marginStart: 290, top: 10 }}
               />
             }
-            onPress={() =>
-              setCurrentCity(prevState => ({ ...prevState, pickerOpen: !prevState.pickerOpen }))
-            }
+            onPress={() => setCurrentCity(prevState => ({ ...prevState, pickerOpen: true }))}
             topBarProps={{
               doneLabel: "Done",
               cancelLabel: "Cancel",
@@ -346,9 +343,9 @@ const NewAccountParentScreen = ({ navigation }) => {
             style={styles.nextButton}
             buttonColor="#FA89B8"
             textColor="#fff"
-            onPress={handleNext}
+            onPress={handleRegister}
           >
-            <Text style={styles.nextButtonText}>Next</Text>
+            <Text style={styles.nextButtonText}>Register</Text>
           </Button>
         </View>
       </ScrollView>

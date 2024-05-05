@@ -77,6 +77,18 @@ const styles = StyleSheet.create({
     width: 320,
     bottom: 18,
   },
+  uploadButton: {
+    borderRadius: 5,
+    width: 110,
+    bottom: 15,
+    right: 105,
+  },
+  uploadButtonText: {
+    fontFamily: "FiraSansSemiBold",
+    fontSize: 16,
+    textAlign: "center",
+    lineHeight: 18,
+  },
 });
 
 export default styles;

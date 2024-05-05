@@ -45,7 +45,8 @@
     "react-native-ui-lib": "^7.20.3",
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "~0.19.6",
-    "react-navigation-header-buttons": "^11.2.1"
+    "react-navigation-header-buttons": "^11.2.1",
+    "expo-document-picker": "~11.10.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
