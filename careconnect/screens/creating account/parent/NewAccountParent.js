@@ -344,6 +344,7 @@ const NewAccountParentScreen = ({ navigation }) => {
             buttonColor="#FA89B8"
             textColor="#fff"
             onPress={handleRegister}
+            // onPress={() => navigation.navigate("User", { screen: "ChatBot Screen" })}
           >
             <Text style={styles.nextButtonText}>Register</Text>
           </Button>
