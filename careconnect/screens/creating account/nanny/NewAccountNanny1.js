@@ -447,10 +447,10 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             style={styles.nextButton}
             buttonColor="#FA89B8"
             textColor="#fff"
-            // onPress={handleNext}
-            onPress={() =>
-              navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" })
-            }
+            onPress={handleNext}
+            // onPress={() =>
+            //   navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" })
+            // }
           >
             <Text style={styles.nextButtonText}>Next</Text>
           </Button>
