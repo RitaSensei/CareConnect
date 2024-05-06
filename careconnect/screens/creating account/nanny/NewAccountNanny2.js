@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, ScrollView, SafeAreaView, Alert } from "react-native";
-import { TextInput, Button, IconButton, Checkbox } from "react-native-paper";
-import * as ImagePicker from "expo-image-picker";
+import { TextInput, Button, IconButton, Snackbar, Portal, PaperProvider } from "react-native-paper";
+import { Checkbox } from "react-native-ui-lib";
 import * as DocumentPicker from "expo-document-picker";
-import { Entypo, AntDesign } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
 import styles from "../styles";
 import { PickerComponent } from "../../../components/PickerComponent";
@@ -19,22 +19,11 @@ const NewAccountNanny2Screen = ({ navigation }) => {
   const [blobFile, setBlobFile] = useState(null);
   const [fileName, setFileName] = useState([]);
   const [isChoosed, setIsChoosed] = useState(false);
-  // const [profilePhoto, setProfilePhoto] = useState(null);
-  // const [profilePhotoError, setProfilePhotoError] = useState(false);
   const [emptyField, setEmptyField] = useState(false);
-
-  // const handleProfilePhoto = async () => {
-  //   const result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
-  //   if (!result.canceled) {
-  //     setEmptyField(false);
-  //     setProfilePhoto(result.assets[0].uri);
-  //   }
-  // };
+  const [snackBarVisible, setSnackBarVisible] = useState(false);
+  const [snackBarSuccessVisible, setSnackBarSuccessVisible] = useState(false);
+  const [nbrUploadedDoc, setNbrUploadedDoc] = useState(0);
+  const [checked, setChecked] = React.useState(false);
 
   const [yearsOfExperience, setYearsOfExperience] = useState([
     { id: 0, nativePickerValue: "", pickerOpen: false, options: allYearsOfExperience },
@@ -182,9 +171,11 @@ const NewAccountNanny2Screen = ({ navigation }) => {
       !isAnyChildrenAgesPickerEmpty &&
       !isAnyQualificationsPickerEmpty &&
       !isAnyLanguagesPickerEmpty &&
-      !isAnyCertificationsPickerEmpty
+      !isAnyCertificationsPickerEmpty &&
+      nbrUploadedDoc === certifications.length
     ) {
-      navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
+      console.log("All fields are filled");
+      // navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
     } else {
       setEmptyField(true);
     }
@@ -193,7 +184,7 @@ const NewAccountNanny2Screen = ({ navigation }) => {
   const handlePickDocuments = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: "application/pdf",
+        type: ["application/pdf"],
         copyToCacheDirectory: true,
         multiple: true,
       });
@@ -203,9 +194,10 @@ const NewAccountNanny2Screen = ({ navigation }) => {
         const fileNames = result.assets.map(asset => asset.name);
         setFileName(fileNames);
         setIsChoosed(true);
-        console.log(fileName);
+        setNbrUploadedDoc(result.assets.length);
+        setSnackBarSuccessVisible(true);
       } else {
-        Alert.alert("Document picker cancelled");
+        setSnackBarVisible(true);
       }
     } catch (error) {
       // User cancelled the picker
@@ -219,96 +211,146 @@ const NewAccountNanny2Screen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flexGrow: 1, backgroundColor: "#fff" }}>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        directionalLockEnabled
-        showsHorizontalScrollIndicator={false}
-        alwaysBounceHorizontal={false}
-        overScrollMode="never"
-        automaticallyAdjustKeyboardInsets
-      >
-        <View style={styles.container}>
-          <Text style={styles.title}>Nanny</Text>
-          <PickerComponent
-            data={childrenAges}
-            emptyField={emptyField}
-            onSelect={(index, value) => handlePickerSelect(index, value, "childrenAges")}
-            onAdd={() => handleAddPicker("childrenAges")}
-            onRemove={index => handleRemovePicker(index, "childrenAges")}
-            disabled={childrenAges.length >= allChildAgeIntervals.length}
-            placeholder="Select Age Range of Children"
-            errorText="Please select the age range of children you worked with"
-          />
-          <PickerComponent
-            data={yearsOfExperience}
-            emptyField={emptyField}
-            onSelect={(index, value) => handlePickerSelect(index, value, "yearsOfExperience")}
-            onAdd={() => handleAddPicker("yearsOfExperience")}
-            onRemove={index => handleRemovePicker(index, "yearsOfExperience")}
-            disabled={yearsOfExperience.length >= allYearsOfExperience.length}
-            placeholder="Select Years of Experience"
-            errorText="Please select how many years of experience you have"
-          />
-          <PickerComponent
-            data={certifications}
-            emptyField={emptyField}
-            onSelect={(index, value) => handlePickerSelect(index, value, "certifications")}
-            onAdd={() => handleAddPicker("certifications")}
-            onRemove={index => handleRemovePicker(index, "certifications")}
-            disabled={certifications.length >= allCertifications.length}
-            placeholder="Select Certifications"
-            errorText="Please select your certifications"
-          />
-          <PickerComponent
-            data={qualifications}
-            emptyField={emptyField}
-            onSelect={(index, value) => handlePickerSelect(index, value, "qualifications")}
-            onAdd={() => handleAddPicker("qualifications")}
-            onRemove={index => handleRemovePicker(index, "qualifications")}
-            disabled={qualifications.length >= allQualifications.length}
-            placeholder="Select Qualifications"
-            errorText="Please select your qualifications"
-          />
-          <Button
-            mode="contained-tonal"
-            style={styles.uploadButton}
-            buttonColor="#FCD9E0"
-            textColor="#fff"
-            contentStyle={{ flexDirection: "row-reverse", justifyContent: "space-between" }}
-            icon={() => <Entypo name="upload" size={18} color="#000" />}
-            onPress={handlePickDocuments}
-          >
-            <Text style={styles.uploadButtonText}>Upload</Text>
-          </Button>
-          {/* {fileName && <Alert> File selected</Alert>} */}
-          <PickerComponent
-            data={languages}
-            emptyField={emptyField}
-            onSelect={(index, value) => handlePickerSelect(index, value, "languages")}
-            onAdd={() => handleAddPicker("languages")}
-            onRemove={index => handleRemovePicker(index, "languages")}
-            disabled={languages.length >= allLanguages.length}
-            placeholder="Select Languages"
-            errorText="Please select  the languages you speak"
-          />
-          <Checkbox status="checked" color="#FA89B8">
-            <Text style={{ color: "black" }}>
-              By clicking Register, you agree to our Terms and Conditions and Privacy Policy
-            </Text>
-          </Checkbox>
-          <Button
-            mode="contained-tonal"
-            style={styles.nextButton}
-            buttonColor="#FA89B8"
-            textColor="#fff"
-            onPress={handleRegister}
-          >
-            <Text style={styles.nextButtonText}>Register</Text>
-          </Button>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <PaperProvider>
+      <SafeAreaView style={{ flexGrow: 1, backgroundColor: "#fff" }}>
+        <ScrollView
+          // contentContainerStyle={{ flexGrow: 1 }}
+          directionalLockEnabled
+          showsHorizontalScrollIndicator={false}
+          alwaysBounceHorizontal={false}
+          overScrollMode="never"
+          automaticallyAdjustKeyboardInsets
+        >
+          <View style={styles.container}>
+            <Text style={styles.title}>Nanny</Text>
+            <PickerComponent
+              data={childrenAges}
+              emptyField={emptyField}
+              onSelect={(index, value) => handlePickerSelect(index, value, "childrenAges")}
+              onAdd={() => handleAddPicker("childrenAges")}
+              onRemove={index => handleRemovePicker(index, "childrenAges")}
+              disabled={childrenAges.length >= allChildAgeIntervals.length}
+              placeholder="Select Age Range of Children"
+              errorText="Please select the age range of children you worked with"
+            />
+            <PickerComponent
+              data={yearsOfExperience}
+              emptyField={emptyField}
+              onSelect={(index, value) => handlePickerSelect(index, value, "yearsOfExperience")}
+              onAdd={() => handleAddPicker("yearsOfExperience")}
+              onRemove={index => handleRemovePicker(index, "yearsOfExperience")}
+              disabled={yearsOfExperience.length >= allYearsOfExperience.length}
+              placeholder="Select Years of Experience"
+              errorText="Please select how many years of experience you have"
+            />
+            <PickerComponent
+              data={certifications}
+              emptyField={emptyField}
+              onSelect={(index, value) => handlePickerSelect(index, value, "certifications")}
+              onAdd={() => handleAddPicker("certifications")}
+              onRemove={index => handleRemovePicker(index, "certifications")}
+              disabled={certifications.length >= allCertifications.length}
+              placeholder="Select Certifications"
+              errorText="Please select your certifications"
+            />
+            <Button
+              mode="contained-tonal"
+              style={styles.uploadButton}
+              buttonColor="#FCD9E0"
+              textColor="#fff"
+              contentStyle={{ flexDirection: "row-reverse", justifyContent: "space-between" }}
+              icon={() => <Entypo name="upload" size={18} color="#000" />}
+              onPress={handlePickDocuments}
+            >
+              <Text style={styles.uploadButtonText}>Upload</Text>
+            </Button>
+            {isChoosed && (
+              <Portal>
+                <Snackbar
+                  visible={snackBarSuccessVisible}
+                  duration={1500}
+                  onDismiss={() => setSnackBarSuccessVisible(false)}
+                  action={{ label: "Undo", onPress: () => setSnackBarSuccessVisible(false) }}
+                  elevation={0}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "FiraSansRegular",
+                      fontSize: 15,
+                      color: "#fff",
+                    }}
+                  >
+                    You have uploaded {nbrUploadedDoc} document{nbrUploadedDoc > 1 && "s"}{" "}
+                    successfully!
+                  </Text>
+                </Snackbar>
+              </Portal>
+            )}
+            <Portal>
+              <Snackbar
+                visible={snackBarVisible}
+                duration={1500}
+                onDismiss={() => setSnackBarVisible(false)}
+                action={{ label: "Undo", onPress: () => setSnackBarVisible(false) }}
+                elevation={0}
+              >
+                <Text
+                  style={{
+                    fontFamily: "FiraSansRegular",
+                    fontSize: 15,
+                    color: "#fff",
+                  }}
+                >
+                  Document Picker Canceled
+                </Text>
+              </Snackbar>
+            </Portal>
+            <PickerComponent
+              data={qualifications}
+              emptyField={emptyField}
+              onSelect={(index, value) => handlePickerSelect(index, value, "qualifications")}
+              onAdd={() => handleAddPicker("qualifications")}
+              onRemove={index => handleRemovePicker(index, "qualifications")}
+              disabled={qualifications.length >= allQualifications.length}
+              placeholder="Select Qualifications"
+              errorText="Please select your qualifications"
+            />
+            <PickerComponent
+              data={languages}
+              emptyField={emptyField}
+              onSelect={(index, value) => handlePickerSelect(index, value, "languages")}
+              onAdd={() => handleAddPicker("languages")}
+              onRemove={index => handleRemovePicker(index, "languages")}
+              disabled={languages.length >= allLanguages.length}
+              placeholder="Select Languages"
+              errorText="Please select  the languages you speak"
+            />
+            <Checkbox
+              value={checked}
+              onValueChange={() => setChecked(!checked)}
+              label="By signing up you accept the Terms of Service and Privacy Policy"
+              labelStyle={{ fontFamily: "FiraSansRegular", fontSize: 12 }}
+              color="#FA89B8"
+              size={26}
+              containerStyle={{ width: 320, marginBottom: 20 }}
+              style={{
+                borderRadius: 3,
+              }}
+            />
+            <Button
+              mode="contained-tonal"
+              disabled={!checked}
+              style={styles.nextButton}
+              buttonColor="#FA89B8"
+              textColor="#fff"
+              onPress={handleRegister}
+            >
+              <Text style={styles.nextButtonText}>Register</Text>
+            </Button>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </PaperProvider>
   );
 };
 
