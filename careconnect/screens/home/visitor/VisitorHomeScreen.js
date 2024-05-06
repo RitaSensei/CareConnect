@@ -130,7 +130,7 @@ const VisitorHomeScreen = ({ navigation }) => {
               <Text style={styles.descriptionTitle}>Suggested Nannies</Text>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("NannyHiring", { screen: "Nannies Catalog Page" })
+                  navigation.navigate("NannyHiringVisitor", { screen: "Nannies Catalog Page" })
                 }
               >
                 <Text style={styles.seeAllText}>
