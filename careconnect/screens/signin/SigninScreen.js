@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { TextInput, Button } from "react-native-paper";
-
+import { FIREBASE_AUTH } from "../../firebase/firebaseConfig";
 import styles from "./styles";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false); // Add this line to handle errors for email field.
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const auth =FIREBASE_AUTH;
 
   const handleEmailChange = text => {
     setEmail(text);
@@ -17,8 +19,24 @@ const SigninScreen = ({ navigation }) => {
     setEmailError(!emailRegex.test(text));
   };
 
-  const handleLogin = () => {
-    // Handle login logic here
+  const handleLogin = async () => {
+    // Input validation (optional but recommended)
+    if (email.trim() === "" || password.trim() === "") {
+      alert("Please fill in both email and password fields.");
+      return;
+    }
+  
+    try {
+      // Sign in with Firebase Auth
+      await signInWithEmailAndPassword(auth,email, password);
+  
+      // Handle successful login
+      console.log("User logged in successfully!");
+      navigation.navigate("User", { screen: "User Home Page" });
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Login failed. Please check your email and password.");
+    }
   };
 
   const handleForgotPassword = () => {
@@ -67,7 +85,7 @@ const SigninScreen = ({ navigation }) => {
               onChangeText={setPassword}
             />
           </View>
-          <TouchableOpacity style={styles.forgotPasswordButton} onPress={handleForgotPassword}>
+          <TouchableOpacity style={[styles.forgotPasswordButton, { marginTop: 250, marginBottom: 1 }]}onPress={handleForgotPassword}>
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>

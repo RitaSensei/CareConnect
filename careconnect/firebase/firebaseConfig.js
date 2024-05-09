@@ -10,12 +10,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Initialize the web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: Constants.expoConfig.extra.apiKey,
-  authDomain: Constants.expoConfig.extra.firebaseAuthDomain,
-  projectId: Constants.expoConfig.extra.firebaseProjectId,
-  storageBucket: Constants.expoConfig.extra.firebaseStorageBucket,
-  messagingSenderId: Constants.expoConfig.extra.firebaseMessagingSenderId,
-  appId: Constants.expoConfig.extra.firebaseAppId,
+  apiKey: "AIzaSyBLRzR4uqoeO7Uc6pOA-3uTNx1PhxL-bb0",
+  authDomain: "careconnect-66481.firebaseapp.com",
+  projectId: "careconnect-66481",
+  storageBucket: "careconnect-66481.appspot.com",
+  messagingSenderId: "9285222114",
+  appId: "1:9285222114:web:631966364d7e7650d268bb"
 };
 
 // Initialize Firebase, Firestore and authentication module

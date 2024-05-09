@@ -138,7 +138,13 @@ const NewAccountNanny1Screen = ({ navigation }) => {
       !passwordError &&
       !confirmPasswordError
     ) {
-      navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
+      navigation.navigate("NewAccount", {
+        screen: "Nanny New Account Page 2",
+        params: {
+          email: email, // assuming 'email' is the state variable holding the email
+          password: password // assuming 'password' is the state variable holding the password
+        }
+      });
     } else {
       const profilePhotoError = !profilePhoto; // Check if profile photo is empty
       setEmptyField(true);

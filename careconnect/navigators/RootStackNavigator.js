@@ -7,6 +7,7 @@ import VisitorStackNavigator from "./VisitorStackNavigator";
 import UserStackNavigator from "./UserStackNavigator";
 import NannyHiringVisitorStackNavigator from "./NannyHiringVisitorStackNavigator";
 import NannyHiringUserStackNavigator from "./NannyHiringUserStackNavigator";
+import UserHomeScreen from "../screens/home/user/UserHomeScreen";
 
 const RootStack = createStackNavigator();
 
@@ -26,6 +27,7 @@ const RootStackNavigator = () => {
       <RootStack.Screen name="User" component={UserStackNavigator} />
       <RootStack.Screen name="NannyHiringVisitor" component={NannyHiringVisitorStackNavigator} />
       <RootStack.Screen name="NannyHiringUser" component={NannyHiringUserStackNavigator} />
+      <RootStack.Screen name="UserHomeScreen" component={UserHomeScreen} />
     </RootStack.Navigator>
   );
 };

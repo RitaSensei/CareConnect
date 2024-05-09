@@ -4,8 +4,11 @@ import { TextInput, Button, IconButton, Snackbar, Portal, PaperProvider } from "
 import { Checkbox } from "react-native-ui-lib";
 import * as DocumentPicker from "expo-document-picker";
 import { Entypo } from "@expo/vector-icons";
-
+import { FIREBASE_AUTH } from "../../../firebase/firebaseConfig";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import styles from "../styles";
+import { useRoute } from '@react-navigation/native';
+
 import { PickerComponent } from "../../../components/PickerComponent";
 import {
   allYearsOfExperience,
@@ -24,6 +27,10 @@ const NewAccountNanny2Screen = ({ navigation }) => {
   const [snackBarSuccessVisible, setSnackBarSuccessVisible] = useState(false);
   const [nbrUploadedDoc, setNbrUploadedDoc] = useState(0);
   const [checked, setChecked] = React.useState(false);
+  const auth =FIREBASE_AUTH;
+  const route = useRoute();
+  const { email, password } = route.params;
+
 
   const [yearsOfExperience, setYearsOfExperience] = useState([
     { id: 0, nativePickerValue: "", pickerOpen: false, options: allYearsOfExperience },
@@ -157,7 +164,7 @@ const NewAccountNanny2Screen = ({ navigation }) => {
     }
   };
 
-  const handleRegister = () => {
+  const handleRegister = async() => {
     const isAnyYearExperiencePickerEmpty = yearsOfExperience.some(
       picker => !picker.nativePickerValue
     );
@@ -174,6 +181,14 @@ const NewAccountNanny2Screen = ({ navigation }) => {
       !isAnyCertificationsPickerEmpty &&
       nbrUploadedDoc === certifications.length
     ) {
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        console.log("User Nanny registered successfully!");
+        navigation.navigate("User", { screen: "User Home Page" });
+      } catch (error) {
+        console.error("Register error:", error);
+        alert("Registration failed. Please try again.");
+      }
       console.log("All fields are filled");
       // navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
     } else {

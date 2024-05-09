@@ -4,7 +4,8 @@ import { TextInput, Button } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "react-native-ui-lib";
 import { Entypo } from "@expo/vector-icons";
-
+import { FIREBASE_AUTH } from "../../../firebase/firebaseConfig";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import styles from "../styles";
 import { allLocations } from "../../../utils/allOptions";
 
@@ -21,6 +22,7 @@ const NewAccountParentScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmedPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmedPasswordError] = useState(false);
+  const auth =FIREBASE_AUTH;
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureTextEntryBeta, setSecureTextEntryBeta] = useState(true);
   const [emptyField, setEmptyField] = useState(false);
@@ -93,8 +95,7 @@ const NewAccountParentScreen = ({ navigation }) => {
     }
   };
 
-  const handleRegister = () => {
-    // todo: add the registration logic
+  const handleRegister = async () => {
     if (
       firstName.trim() !== "" &&
       lastName.trim() !== "" &&
@@ -106,15 +107,29 @@ const NewAccountParentScreen = ({ navigation }) => {
       confirmPassword.trim() !== "" &&
       !emailError &&
       !passwordError &&
-      !confirmPasswordError
+      !confirmPasswordError &&
+      password === confirmPassword // Ensure password matches confirmPassword
     ) {
-      navigation.navigate("User", { screen: "User Home Page" });
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        console.log("User Parent registered successfully!");
+        navigation.navigate("User", { screen: "User Home Page" });
+      } catch (error) {
+        console.error("Register error:", error);
+        alert("Registration failed. Please try again.");
+      }
     } else {
+      // Handle incomplete or invalid fields
       const profilePhotoError = !profilePhoto; // Check if profile photo is empty
       setEmptyField(true);
       setProfilePhotoError(profilePhotoError);
+      // You might want to set specific errors for other fields too
+      // Example: setEmailError(true) if email is empty or invalid
+      // setPasswordError(true) if password is empty or invalid
+      // setConfirmPasswordError(true) if confirmPassword is empty or does not match password
     }
   };
+  
 
   return (
     <SafeAreaView style={{ flexGrow: 1, backgroundColor: "#fff" }}>
