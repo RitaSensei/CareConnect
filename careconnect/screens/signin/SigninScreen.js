@@ -48,7 +48,7 @@ const SigninScreen = ({ navigation }) => {
   };
 
   const handleForgotPassword = () => {
-    // Handle forgot password logic here
+    navigation.navigate("AuthScreen", { screen: "Reset Password Page" });
   };
 
   return (

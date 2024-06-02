@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import SigninScreen from "../screens/signin/SigninScreen";
 import SignupScreen from "../screens/signup/SignupScreen";
-// import ResetPasswordScreen from "../screens/resetpassword/ResetPasswordScreen";
+import ResetPasswordScreen from "../screens/resetpassword/ResetPasswordScreen";
 
 import { StyleSheet } from "react-native";
 
@@ -29,16 +29,11 @@ const AuthStackNavigator = () => {
         name="Signup Page"
         component={SignupScreen}
       />
-      {/* <AuthStack.Screen
+      <AuthStack.Screen
         options={{ headerStyle: styles.headerStyle }}
-        name="Sms"
-        component={VerifyEmailScreen}
-      /> */}
-      {/* <AuthStack.Screen
-        options={{ headerStyle: styles.headerStyle }}
-        name="ResetPassword"
+        name="Reset Password Page"
         component={ResetPasswordScreen}
-      /> */}
+      />
     </AuthStack.Navigator>
   );
 };
