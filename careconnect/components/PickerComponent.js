@@ -52,20 +52,16 @@ export const PickerComponent = ({
                 cancelLabel: "Cancel",
               }}
               fieldType="filter"
-            >
-              {item.options.map(option => (
-                <Picker.Item
-                  key={option.value}
-                  value={option.value}
-                  label={option.label}
-                  disabled={option.disabled}
-                  style={{
+              items={item.options.map(option => ({
+                value:option.value,
+                label:option.label,
+                disabled:option.disabled,
+                style:{
                     color: option.value === item.nativePickerValue ? "#ff0000" : "#000000",
-                  }}
-                  multiline
-                />
-              ))}
-            </Picker>
+                },
+                multiline
+              }))}
+            />
             {index === 0 && (
               <IconButton
                 icon="plus-circle"

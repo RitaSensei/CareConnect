@@ -2,8 +2,9 @@ import "dotenv/config";
 
 export default {
   expo: {
+    owner: "ritati",
     name: "careconnect",
-    slug: "CareConnect",
+    slug: "careconnect",
     platforms: ["ios", "android", "web"],
     version: "1.0.0",
     orientation: "portrait",
@@ -32,6 +33,10 @@ export default {
     },
     updates: {
       fallbackToCacheTimeout: 0,
+      "url": "https://u.expo.dev/4ffbb358-94d2-4904-83c4-a66a71c04fb3",
+    },
+    runtimeVersion : {
+      "policy" : "appVersion",
     },
     plugins: [
       ["expo-router"],
@@ -81,7 +86,7 @@ export default {
       firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.FIREBASE_APP_ID,
       eas: {
-        projectId: "1df81b02-4a0b-4a8b-a81a-109565e6c707",
+        "projectId": "4ffbb358-94d2-4904-83c4-a66a71c04fb3"
       },
     },
   },

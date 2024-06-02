@@ -258,19 +258,15 @@ const NewAccountNanny1Screen = ({ navigation }) => {
               cancelLabel: "Cancel",
             }}
             fieldType="filter"
-          >
-            {allNationalities.map(option => (
-              <Picker.Item
-                key={option.value}
-                value={option.value}
-                label={option.label}
-                disabled={option.disabled}
-                style={{
-                  color: option.value === nationality.nativePickerValue ? "#ff0000" : "#000000",
-                }}
-              />
-            ))}
-          </Picker>
+            items={allNationalities.map(option => ({
+              value: option.value,
+              label: option.label,
+              disabled: option.disabled,
+              textStyle: {
+                color: option.value === nationality.nativePickerValue ? "#ff0000" : "#000000",
+              },
+            }))}
+          />
           {emptyField && !nationality.nativePickerValue && (
             <Text style={styles.errorText}>Please select your nationality</Text>
           )}
@@ -320,19 +316,15 @@ const NewAccountNanny1Screen = ({ navigation }) => {
               cancelLabel: "Cancel",
             }}
             fieldType="filter"
-          >
-            {allLocations.map(option => (
-              <Picker.Item
-                key={option.value}
-                value={option.value}
-                label={option.label}
-                disabled={option.disabled}
-                style={{
-                  color: option.value === currentCity.nativePickerValue ? "#ff0000" : "#000000",
-                }}
-              />
-            ))}
-          </Picker>
+            items={allLocations.map(option => ({
+              value:option.value,
+              label:option.label,
+              disabled:option.disabled,
+              style:{
+                color: option.value === currentCity.nativePickerValue ? "#ff0000" : "#000000",
+              },
+            }))}
+          />
           {emptyField && !currentCity.nativePickerValue && (
             <Text style={styles.errorText}>Please select your current city</Text>
           )}

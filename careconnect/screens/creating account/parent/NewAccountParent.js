@@ -219,19 +219,15 @@ const NewAccountParentScreen = ({ navigation }) => {
               cancelLabel: "Cancel",
             }}
             fieldType="filter"
-          >
-            {allLocations.map(option => (
-              <Picker.Item
-                key={option.value}
-                value={option.value}
-                label={option.label}
-                disabled={option.disabled}
-                style={{
-                  color: option.value === currentCity.nativePickerValue ? "#ff0000" : "#000000",
-                }}
-              />
-            ))}
-          </Picker>
+            items={allLocations.map(option => ({
+              value: option.value,
+              label: option.label,
+              disabled: option.disabled,
+              textStyle: {
+                color: option.value === currentCity.nativePickerValue ? "#ff0000" : "#000000",
+              },
+            }))} // Pass the list of options
+          />
           {emptyField && !currentCity.nativePickerValue && (
             <Text style={styles.errorText}>Please select your current city</Text>
           )}
@@ -343,8 +339,8 @@ const NewAccountParentScreen = ({ navigation }) => {
             style={styles.nextButton}
             buttonColor="#FA89B8"
             textColor="#fff"
-            onPress={handleRegister}
-            // onPress={() => navigation.navigate("User", { screen: "ChatBot Screen" })}
+            // onPress={handleRegister}
+            onPress={() => navigation.navigate("User", { screen: "ChatBot Screen" })}
           >
             <Text style={styles.nextButtonText}>Register</Text>
           </Button>
