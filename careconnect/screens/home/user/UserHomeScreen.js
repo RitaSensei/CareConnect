@@ -4,7 +4,6 @@ import { Entypo } from "@expo/vector-icons";
 
 import styles from "./styles";
 import { renderProfile } from "../../../components/ProfilesSlider";
-import { Testimonials } from "../../../components/Testimonials";
 
 const profileData = [
   {

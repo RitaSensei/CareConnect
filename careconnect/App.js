@@ -1,14 +1,10 @@
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-// import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useState } from "react";
-// import { Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import RootStackNavigator from "./navigators/RootStackNavigator";
-
 import { fonts } from "./assets/index";
-// import styles from "./styles";
 
 SplashScreen.preventAutoHideAsync(); // Keep splash screen visible until we are ready to hide it
 

@@ -12,36 +12,44 @@ import { Image, StyleSheet } from "react-native";
 const Tab = AnimatedTabBarNavigator();
 const Stack = createStackNavigator();
 
-const UserTabNavigator = () => {
+const UserTabNavigator = ({
+  initialRouteName = 'User Home Page',
+  activeTintColor = '#FA89B8',
+  tabBarLabelStyle = { fontFamily: 'FiraSansRegular', fontSize: 10 },
+  iconSize = 18,
+  topPadding = 10,
+  bottomPadding = -8,
+  activeTabBackgrounds = '#F1E7E8',
+  dotSize = 'small',
+  tabButtonLayout = 'vertical',
+}) => {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
       }}
       tabBarOptions={{
-        activeTintColor: "#FA89B8",
+        activeTintColor: activeTintColor,
         tabStyle: { height: 75 },
       }}
       appearance={{
-        topPadding: 10,
-        bottomPadding: -8,
-        activeTabBackgrounds: "#F1E7E8",
+        topPadding: topPadding,
+        bottomPadding: bottomPadding,
+        activeTabBackgrounds: activeTabBackgrounds,
         whenInactiveShow: "icon-only",
-        dotSize: "small",
-        tabButtonLayout: "vertical",
+        dotSize: dotSize,
+        tabButtonLayout: tabButtonLayout,
       }}
+      initialRouteName={initialRouteName}
     >
       <Tab.Screen
         name="User Home Page"
         component={UserHomeScreen}
         options={{
           tabBarLabel: "Home",
-          tabBarLabelStyle: {
-            fontFamily: "FiraSansRegular",
-            fontSize: 10,
-          },
+          tabBarLabelStyle: tabBarLabelStyle,
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={18} color={color} />
+            <Ionicons name={focused ? "home" : "home-outline"} size={iconSize} color={color} />
           ),
         }}
       />
@@ -50,12 +58,9 @@ const UserTabNavigator = () => {
         component={SettingsScreen}
         options={{
           tabBarLabel: "Settings",
-          tabBarLabelStyle: {
-            fontFamily: "FiraSansRegular",
-            fontSize: 10,
-          },
+          tabBarLabelStyle: tabBarLabelStyle,
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "settings" : "settings-outline"} size={18} color={color} />
+            <Ionicons name={focused ? "settings" : "settings-outline"} size={iconSize} color={color} />
           ),
         }}
       />
@@ -64,14 +69,11 @@ const UserTabNavigator = () => {
         component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
-          tabBarLabelStyle: {
-            fontFamily: "FiraSansRegular",
-            fontSize: 10,
-          },
+          tabBarLabelStyle: tabBarLabelStyle,
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? "account" : "account-outline"}
-              size={18}
+              size={iconSize}
               color={color}
             />
           ),
@@ -82,14 +84,11 @@ const UserTabNavigator = () => {
         component={NotificationsScreen}
         options={{
           tabBarLabel: "Notifications",
-          tabBarLabelStyle: {
-            fontFamily: "FiraSansRegular",
-            fontSize: 10,
-          },
+          tabBarLabelStyle: tabBarLabelStyle,
           tabBarIcon: ({ color, focused }) => (
             <MaterialIcons
               name={focused ? "notifications" : "notifications-none"}
-              size={18}
+              size={iconSize}
               color={color}
             />
           ),
@@ -111,14 +110,6 @@ const UserStackNavigator = ({ navigation }) => {
         headerTitle: HeaderLogo,
         headerStyle: styles.headerStyle,
         headerTintColor: "#fff",
-        // todo: icon should be profile pic of user
-        // headerRight: () => (
-        //   <TouchableOpacity
-        //     onPress={() => navigation.navigate("WelcomeScreen", { screen: "Welcome Page" })}
-        //   >
-        //     <FontAwesome name="user-circle" size={38} color="black" style={{ right: 10 }} />
-        //   </TouchableOpacity>
-        // ),
       }}
     >
       <Stack.Screen name="UserTabNavigator" component={UserTabNavigator} />
@@ -139,5 +130,5 @@ const styles = StyleSheet.create({
     top: -5,
   },
 });
-// TODO : change styles (add tab bar navigation)
+
 export default UserStackNavigator;

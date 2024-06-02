@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import { TextInput, Button } from "react-native-paper";
+import { TextInput, Button, Snackbar } from "react-native-paper";
+import { FIREBASE_GET_AUTH, FIRESTORE_DB } from "../../firebase/firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import styles from "./styles";
 
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(false); // Add this line to handle errors for email field.
+  const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarBackgroundColor, setSnackbarBackgroundColor] = useState("red");
+  const auth = FIREBASE_GET_AUTH;
+  const db = FIRESTORE_DB;
 
   const handleEmailChange = text => {
     setEmail(text);
@@ -17,8 +24,27 @@ const SigninScreen = ({ navigation }) => {
     setEmailError(!emailRegex.test(text));
   };
 
-  const handleLogin = () => {
-    // Handle login logic here
+  const handleLogin = async () => {
+    if (email.trim() === "" || password.trim() === "") {
+      setSnackbarMessage("Please enter email and password");
+      setSnackbarBackgroundColor("red");
+      setSnackbarVisible(true);
+      return;
+    }
+    try {
+      // Sign in with Firebase Auth
+      await signInWithEmailAndPassword(auth,email, password);
+      setSnackbarMessage("Login successful");
+      setSnackbarBackgroundColor("green");
+      setSnackbarVisible(true);
+      setEmail("");
+      setPassword("");
+      navigation.navigate("User", { screen: "User Home Page" });
+    } catch (error) {
+      setSnackbarMessage("Login failed! Please check your credentials");
+      setSnackbarBackgroundColor("red");
+      setSnackbarVisible(true);
+    }
   };
 
   const handleForgotPassword = () => {
@@ -103,6 +129,20 @@ const SigninScreen = ({ navigation }) => {
           Don't want to create an account? Go as a visitor
         </Text>
       </TouchableOpacity>
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+        duration={3000}
+        action={{
+          label: 'OK',
+          onPress: () => {
+            setSnackbarVisible(false);
+          },
+        }}
+        style={{ backgroundColor: snackbarBackgroundColor }}
+      >
+        {snackbarMessage}
+      </Snackbar>
     </View>
   );
 };
