@@ -72,6 +72,12 @@ export default {
         },
       ],
       [
+        "expo-av",
+        {
+          microphonePermission: "Allow $(PRODUCT_NAME) to access your microphone."
+        }
+      ],
+      [
         "expo-document-picker",
         {
           iCloudContainerEnvironment: "Production",

@@ -138,7 +138,49 @@ const NewAccountNanny1Screen = ({ navigation }) => {
       !passwordError &&
       !confirmPasswordError
     ) {
-      navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
+        navigation.navigate("NewAccount", {
+          screen: "Nanny New Account Page 2",
+          params: {
+            firstName,
+            lastName,
+            dateOfBirth: date.toISOString().split("T")[0],
+            nationality:nationality.nativePickerValue,
+            mobileNumber,
+            currentCity: currentCity.nativePickerValue,
+            profilePhoto,
+            email,
+            password
+          },
+        });
+
+        // Reset all fields
+        setFirstName("");
+        setLastName("");
+        setDate(new Date());
+        setMobileNumber("");
+        setProfilePhoto(null);
+        setEmail("");
+        setPassword("");
+        setConfirmedPassword("");
+        setCurrentCity({
+          location: undefined,
+          nativePickerValue: "",
+          pickerOpen: false,
+        });
+        setNationality({
+          nationality: undefined,
+          nativePickerValue: "",
+          pickerOpen: false,
+        });
+        setEmptyField(false);
+        setValidDateField(false);
+        setMobileNumberError(false);
+        setProfilePhotoError(false);
+        setEmailError(false);
+        setPasswordError(false);
+        setConfirmedPasswordError(false);
+        setSecureTextEntry(true);
+        setSecureTextEntryBeta(true);
     } else {
       const profilePhotoError = !profilePhoto; // Check if profile photo is empty
       setEmptyField(true);
@@ -347,7 +389,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
           ) : (
             emptyField &&
             profilePhotoError && (
-              <Text style={styles.errorText}>Please upload your profile picture.</Text>
+              <Text style={styles.errorText}>Please upload your profile picture</Text>
             )
           )}
           <View>

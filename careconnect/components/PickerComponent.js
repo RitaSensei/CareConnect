@@ -59,7 +59,7 @@ export const PickerComponent = ({
                 style:{
                     color: option.value === item.nativePickerValue ? "#ff0000" : "#000000",
                 },
-                multiline
+                // multiline
               }))}
             />
             {index === 0 && (

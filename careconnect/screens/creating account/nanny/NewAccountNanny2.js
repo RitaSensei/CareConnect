@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, ScrollView, SafeAreaView, Alert } from "react-native";
+import { View, Text, Image, ScrollView, SafeAreaView } from "react-native";
 import { TextInput, Button, IconButton, Snackbar, Portal, PaperProvider } from "react-native-paper";
 import { Checkbox } from "react-native-ui-lib";
 import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
+import { Video } from "expo-av";
 import { Entypo } from "@expo/vector-icons";
-
+import { FIREBASE_GET_AUTH, FIRESTORE_DB } from "../../../firebase/firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import styles from "../styles";
 import { PickerComponent } from "../../../components/PickerComponent";
 import {
@@ -15,7 +19,21 @@ import {
   allLanguages,
 } from "../../../utils/allOptions";
 
-const NewAccountNanny2Screen = ({ navigation }) => {
+const NewAccountNanny2Screen = ({ navigation, route }) => {
+  const {
+    firstName,
+    lastName,
+    dateOfBirth,
+    nationality,
+    mobileNumber,
+    currentCity,
+    profilePhoto,
+    email,
+    password
+  } = route.params;
+  
+  const [nannyVideo, setNannyVideo] = useState(null);
+  const [nannyVideoError, setNannyVideoError] = useState(false);
   const [blobFile, setBlobFile] = useState(null);
   const [fileName, setFileName] = useState([]);
   const [isChoosed, setIsChoosed] = useState(false);
@@ -24,6 +42,8 @@ const NewAccountNanny2Screen = ({ navigation }) => {
   const [snackBarSuccessVisible, setSnackBarSuccessVisible] = useState(false);
   const [nbrUploadedDoc, setNbrUploadedDoc] = useState(0);
   const [checked, setChecked] = React.useState(false);
+  const auth = FIREBASE_GET_AUTH;
+  const db = FIRESTORE_DB;
 
   const [yearsOfExperience, setYearsOfExperience] = useState([
     { id: 0, nativePickerValue: "", pickerOpen: false, options: allYearsOfExperience },
@@ -44,6 +64,37 @@ const NewAccountNanny2Screen = ({ navigation }) => {
   const [languages, setLanguages] = useState([
     { id: 0, nativePickerValue: "", pickerOpen: false, options: allLanguages },
   ]);
+
+  const handleNannyVideo = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      allowsEditing: true,
+      aspect: [16,9],
+      quality: 1,
+      base64: true,
+    });
+    if (!result.canceled) {
+      setEmptyField(false);
+      setNannyVideo(result.assets[0].uri);
+    }
+  };
+
+  const renderUploadedVideo = () => {
+    if (nannyVideo) {
+      return (
+        <Video
+          source={{ uri: nannyVideo }}
+          rate={1.0}
+          volume={1.0}
+          isMuted={false}
+          resizeMode="cover"
+          shouldPlay
+          style={{ width: 300, height: 200 }}
+        />
+      );
+    }
+    return null;
+  };
 
   const handlePickerSelect = (index, value, type) => {
     if (type === "yearsOfExperience") {
@@ -157,7 +208,7 @@ const NewAccountNanny2Screen = ({ navigation }) => {
     }
   };
 
-  const handleRegister = () => {
+  const handleValidation = () => {
     const isAnyYearExperiencePickerEmpty = yearsOfExperience.some(
       picker => !picker.nativePickerValue
     );
@@ -166,18 +217,66 @@ const NewAccountNanny2Screen = ({ navigation }) => {
     const isAnyLanguagesPickerEmpty = languages.some(picker => !picker.nativePickerValue);
     const isAnyCertificationsPickerEmpty = certifications.some(picker => !picker.nativePickerValue);
 
-    if (
+    const isValid =
       !isAnyYearExperiencePickerEmpty &&
       !isAnyChildrenAgesPickerEmpty &&
       !isAnyQualificationsPickerEmpty &&
       !isAnyLanguagesPickerEmpty &&
       !isAnyCertificationsPickerEmpty &&
-      nbrUploadedDoc === certifications.length
-    ) {
+      nbrUploadedDoc === certifications.length &&
+      nannyVideo;
+    if (isValid) {
       console.log("All fields are filled");
-      // navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
     } else {
       setEmptyField(true);
+    }
+    return isValid;
+  }
+  
+  const handleRegister = async () => {
+    if (handleValidation()) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userId = userCredential.user.uid;
+        try {
+          const userDoc = {
+            userId,
+            firstName,
+            lastName,
+            dateOfBirth,
+            nationality,
+            mobileNumber,
+            currentCity,
+            profilePhoto,
+            email,
+            password,
+            yearsOfExperience: yearsOfExperience.map(picker => picker.nativePickerValue),
+            childrenAges: childrenAges.map(picker => picker.nativePickerValue),
+            qualifications: qualifications.map(picker => picker.nativePickerValue),
+            languages: languages.map(picker => picker.nativePickerValue),
+            certifications: certifications.map(picker => picker.nativePickerValue),
+            video: nannyVideo,
+            role: "nanny",
+          };
+
+          await setDoc(doc(db,"nannies", userId), userDoc);
+
+          // setSnackbarMessage("Registration successful");
+          // setSnackbarBackgroundColor("green");
+          // setSnackbarVisible(true);
+          // navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
+        } catch (firestoreError) {
+          console.error("Error writing document: ", firestoreError);
+          // setSnackbarMessage("Registration failed! Please try again.");
+          // setSnackbarBackgroundColor("red");
+          // setSnackbarVisible(true);
+        }
+      } catch (authError) {
+        console.error("Error creating user: ", authError);
+        // setSnackbarMessage("Registration failed ! Please try again");
+        // setSnackbarBackgroundColor("red");
+        // setSnackbarVisible(true);
+      }
     }
   };
 
@@ -325,6 +424,26 @@ const NewAccountNanny2Screen = ({ navigation }) => {
               placeholder="Select Languages"
               errorText="Please select  the languages you speak"
             />
+            <Button
+              mode="contained-tonal"
+              style={styles.imageUploadButton}
+              buttonColor="#fff0f3"
+              textColor="#575555"
+              onPress={handleNannyVideo}
+              contentStyle={{ flexDirection: "row-reverse", justifyContent: "space-between" }}
+              icon={() => <Entypo name="upload" size={22} color="#000" />}
+              error={emptyField && nannyVideoError}
+            >
+              <Text style={styles.imageUploadButtonText}>
+                {nannyVideo ? "Change your introductory video" : "Upload your introductory video"}
+              </Text>
+            </Button>
+            {/* Render uploaded video */}
+            {renderUploadedVideo()}
+            {/* Error message for empty field */}
+            {emptyField && nannyVideoError && (
+              <Text style={styles.errorText}>Please upload your introductory video</Text>
+            )}
             <Checkbox
               value={checked}
               onValueChange={() => setChecked(!checked)}
