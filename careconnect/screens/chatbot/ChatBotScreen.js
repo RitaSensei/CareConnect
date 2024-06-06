@@ -1,32 +1,62 @@
-import React, { useState, useEffect, useCallback, useLayoutEffect } from "react";
-import { View, Text, TextInput, Button, TouchableOpacity, Image } from "react-native";
-import { Avatar } from "react-native-paper";
-import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
+import React, { useState, useEffect, useCallback } from "react";
+import { View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-
+import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import styles from "./styles";
-
+import { Buffer } from 'buffer';
+global.Buffer = Buffer;
 const ChatBotScreen = () => {
   const [messages, setMessages] = useState([]);
+  const [sessionId, setSessionId] = useState(null);
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello Dear Parent, I am NannyPal and I am here to help you with your queries 🎉. How can I help you today?",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "NannyPal",
-          avatar: require("../../assets/icons/bot.png"),
-        },
-      },
-    ]);
+    const initializeChat = async () => {
+      try {
+        const id = await createSession();
+        setSessionId(id);
+        setMessages([
+          {
+            _id: 1,
+            text: "Hello Dear Parent, I am NannyPal and I am here to help you with your queries 🎉. How can I help you today?",
+            createdAt: new Date(),
+            user: {
+              _id: 2,
+              name: "NannyPal",
+              avatar: require("../../assets/icons/bot.png"),
+            },
+          },
+        ]);
+      } catch (error) {
+        console.error("Failed to initialize session", error);
+      }
+    };
+    initializeChat();
   }, []);
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = useCallback(async (messages = []) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
-  }, []);
+    const userMessage = messages[0].text;
+    try {
+      if (sessionId) {
+        const response = await sendMessage(userMessage, sessionId);
+        const botMessage = {
+          _id: new Date().getTime(),
+          text: response.output.generic[0].text,
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: "NannyPal",
+            avatar: require("../../assets/icons/bot.png"),
+          },
+        };
+        setMessages(previousMessages => GiftedChat.append(previousMessages, [botMessage]));
+      }else {
+        console.error("No response from Watson Assistant");
+      }
+    } catch (error) {
+      console.error("Failed to send message", error);
+    }
+  }, [sessionId]);
 
   const renderBubble = props => {
     return (
@@ -80,11 +110,11 @@ const ChatBotScreen = () => {
         scrollToBottom
         scrollToBottomComponent={scrollToBottomComponent}
         minComposerHeight={40}
-        // user={{
-        //   _id: auth?.currentUser?.email,
-        //   name: auth?.currentUser?.displayName,
-        //   avatar: auth?.currentUser?.photoURL,
-        // }}
+        //user={{
+        //  _id: 1,  // Static user ID for the parent
+        //  name: 'Parent',  // Static user name for the parent
+        // avatar: 'https://placeimg.com/140/140/any'  // Placeholder avatar
+        //}}
       />
     </View>
   );

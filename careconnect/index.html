@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <script>
+    function sendMessageToReactNative(message) {
+      console.log('Sending message to React Native:', message);
+      window.ReactNativeWebView.postMessage('USER_INPUT:' + message);
+    }
+
+    window.watsonAssistantChatOptions = {
+      integrationID: "267cca37-546e-42f4-98d5-a838607ccaa7",
+      region: "us-south",
+      serviceInstanceID: "96a5cf70-bfe9-40fd-823d-8455eafa60b2",
+      onLoad: function(instance) {
+        console.log('Watson Assistant Chat onLoad function executed');
+        instance.render();
+        instance.on({ type: 'message:send', handler: function(event) {
+          if (event.data.input) {
+            console.log('User input captured:', event.data.input.text);
+            sendMessageToReactNative(event.data.input.text);
+          }
+        }});
+      },
+      showLauncher: false, // Show the built-in launcher
+      openChatByDefault: true, // Do not open chat by default
+      hideCloseButton: true
+    };
+
+    setTimeout(function() {
+      const t = document.createElement('script');
+      t.src = "https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + 
+        (window.watsonAssistantChatOptions.clientVersion || 'latest') + 
+        "/WatsonAssistantChatEntry.js";
+      document.head.appendChild(t);
+    }, 0);
+  </script>
+</body>
+</html>

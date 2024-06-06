@@ -4,7 +4,8 @@ import { TextInput, Button } from "react-native-paper";
 import { FIREBASE_AUTH } from "../../firebase/firebaseConfig";
 import styles from "./styles";
 import { signInWithEmailAndPassword } from "firebase/auth";
-
+import { Buffer } from 'buffer';
+global.Buffer = Buffer;
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false); // Add this line to handle errors for email field.

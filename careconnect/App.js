@@ -9,6 +9,8 @@ import RootStackNavigator from "./navigators/RootStackNavigator";
 
 import { fonts } from "./assets/index";
 // import styles from "./styles";
+import { Buffer } from 'buffer';
+global.Buffer = Buffer;
 
 SplashScreen.preventAutoHideAsync(); // Keep splash screen visible until we are ready to hide it
 
