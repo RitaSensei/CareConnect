@@ -169,27 +169,6 @@ const UserHomeScreen = ({ navigation }) => {
       >
         <Image source={botIcon} style={localStyles.chatIcon} />
       </TouchableOpacity>
-      
-      <Modal
-        visible={chatVisible}
-        animationType="slide"
-        onRequestClose={() => setChatVisible(false)}
-      >
-        <WebView
-          source={{ uri: 'http://10.1.7.52:8000/watsonChat.html' }} // Use your local IP address
-          style={{ flex: 1 }}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          onMessage={handleWebViewMessage}
-          onLoadStart={() => console.log('WebView started loading')}
-          onLoadEnd={() => console.log('WebView finished loading')}
-          onError={(syntheticEvent) => {
-            const { nativeEvent } = syntheticEvent;
-            console.warn('WebView error: ', nativeEvent);
-          }}
-        />
-        <Button title="Close Chat" onPress={() => setChatVisible(false)} />
-      </Modal>
     </SafeAreaView>
   );
 };

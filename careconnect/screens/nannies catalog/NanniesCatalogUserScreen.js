@@ -1,7 +1,10 @@
 import React from "react";
-
-import { renderProfile } from "../../components/ProfilesList";
+import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { CatalogComponent } from "../../components/CatalogComponent";
+import { renderProfile } from "../../components/ProfilesList";
+import botIcon from "../../assets/icons/bot.png";
+
+
 
 const profileData = [
   {
@@ -115,8 +118,36 @@ const profileData = [
   // add more profile data here
 ];
 
-const NanniesCatalogUserScreen = () => {
-  return <CatalogComponent data={profileData} renderItem={renderProfile} />;
+const NanniesCatalogUserScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <CatalogComponent data={profileData} renderItem={renderProfile} />
+      
+      <TouchableOpacity
+        style={styles.chatButton}
+        onPress={() => navigation.navigate("WatsonAssistantChat")}
+      >
+        <Image source={botIcon} style={styles.chatIcon} />
+      </TouchableOpacity>
+    </View>
+  );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  chatButton: {
+    backgroundColor: '#FA89B8',
+    padding: 10,
+    borderRadius: 10,
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  chatIcon: {
+    width: 45,
+    height: 45,
+  },
+});
 
 export default NanniesCatalogUserScreen;
