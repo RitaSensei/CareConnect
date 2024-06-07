@@ -1,49 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Text, View, TouchableOpacity, FlatList, SafeAreaView, ScrollView } from "react-native";
 import { Entypo } from "@expo/vector-icons";
+import { FIRESTORE_DB, FIREBASE_STORAGE } from "../../../firebase/firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
 
 import styles from "./styles";
 import { renderProfile } from "../../../components/ProfilesSlider";
-
-const profileData = [
-  {
-    profilepic: require("../../../assets/images/nanny_image.png"),
-    name: ["Name", "Mary Gomez"],
-    nationality: ["Nationality", "Filipino"],
-    location: ["Location", "Tanger"],
-    experience: ["Experience", "3 yrs"],
-    "desired position": ["Desired position", "live-in, full-time"],
-    "desired salary": ["Desired salary", "2000 MAD/month"],
-  },
-  {
-    profilepic: require("../../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 yrs"],
-    "desired position": ["Desired position", "live-out, part-time"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../../assets/images/nanny_image.png"),
-    name: ["Name", "Mary Gomez"],
-    nationality: ["Nationality", "Filipino"],
-    location: ["Location", "Tanger"],
-    experience: ["Experience", "3 yrs"],
-    "desired position": ["Desired position", "live-in, full-time"],
-    "desired salary": ["Desired salary", "2000 MAD/month"],
-  },
-  {
-    profilepic: require("../../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 yrs"],
-    "desired position": ["Desired position", "live-out, part-time"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  // add more profile data here
-];
 
 const clientsTestimonials = [
   {
@@ -90,12 +53,36 @@ const useAutoScroll = ({ itemLength, flatListRef }) => {
 };
 
 const UserHomeScreen = ({ navigation }) => {
+  const [profileData, setProfileData] = useState([]);
   const flatListRef = useRef(null);
+  const db = FIRESTORE_DB;
+  const storage = FIREBASE_STORAGE;
 
   useAutoScroll({
     itemLength: clientsTestimonials.length,
     flatListRef,
   });
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "nannies"));
+        const profiles = await Promise.all(
+          querySnapshot.docs.map(async doc => {
+            const data = doc.data();
+            const profilePhotoUrl = await getDownloadURL(ref(storage, `nannyProfilePics/${data.userId}.jpg`));
+            return { id: doc.userId, ...data, profilePhotoUrl };
+          })
+        );
+        setProfileData(profiles);
+      } catch (error) {
+        console.error("Error fetching profiles: ", error);
+      }
+    };
+
+    fetchProfiles();
+  }, [db, storage]);
+
 
   return (
     <SafeAreaView style={{ flexGrow: 1 }}>
@@ -140,7 +127,7 @@ const UserHomeScreen = ({ navigation }) => {
             </View>
             <SafeAreaView style={{ flex: 1, marginTop: 10, marginLeft: 5, height: 205 }}>
               <FlatList
-                data={profileData.slice(0, 6)}
+                data={profileData.slice(0,6)}
                 renderItem={renderProfile}
                 keyExtractor={(item, index) => index.toString()}
                 horizontal

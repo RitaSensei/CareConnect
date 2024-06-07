@@ -53,7 +53,7 @@ export const PickerComponent = ({
               }}
               fieldType="filter"
               items={item.options.map(option => ({
-                value:option.value,
+                value:option.label,
                 label:option.label,
                 disabled:option.disabled,
                 style:{

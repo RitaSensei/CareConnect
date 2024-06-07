@@ -291,10 +291,10 @@ export const allChildAgeIntervals = [
 ];
 
 export const allCertifications = [
-  { label: "CPR and First Aid", value: "cpr-first-aid" },
-  { label: "Swim Instructor", value: "ece" },
+  { label: "CPR and First Aid Certification", value: "cpr-first-aid" },
+  { label: "Swim Instructor Certification", value: "swim-instructor" },
   { label: "Special Needs Care Training", value: "special-needs-care" },
-  { label: "Food Safety and Nutrition Certification", value: "food-safety" },
+  { label: "Food Safety and Nutrition Certification", value: "food-safety-nutrition" },
 ];
 
 export const allQualifications = [

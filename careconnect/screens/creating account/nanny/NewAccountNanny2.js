@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, ScrollView, SafeAreaView } from "react-native";
 import { TextInput, Button, IconButton, Snackbar, Portal, PaperProvider } from "react-native-paper";
-import { Checkbox } from "react-native-ui-lib";
+import { Checkbox, Picker } from "react-native-ui-lib";
 import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from "expo-image-picker";
 import { Video } from "expo-av";
 import { Entypo } from "@expo/vector-icons";
-import { FIREBASE_GET_AUTH, FIRESTORE_DB } from "../../../firebase/firebaseConfig";
+import { FIREBASE_GET_AUTH, FIRESTORE_DB, FIREBASE_STORAGE } from "../../../firebase/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styles from "../styles";
 import { PickerComponent } from "../../../components/PickerComponent";
 import {
@@ -17,6 +18,7 @@ import {
   allCertifications,
   allQualifications,
   allLanguages,
+  allPositions
 } from "../../../utils/allOptions";
 
 const NewAccountNanny2Screen = ({ navigation, route }) => {
@@ -34,7 +36,11 @@ const NewAccountNanny2Screen = ({ navigation, route }) => {
   
   const [nannyVideo, setNannyVideo] = useState(null);
   const [nannyVideoError, setNannyVideoError] = useState(false);
-  const [blobFile, setBlobFile] = useState(null);
+  const [desiredPosition, setDesiredPosition] = useState({
+    desiredPosition: undefined,
+    nativePickerValue: "",
+    pickerOpen: false,
+  });
   const [fileName, setFileName] = useState([]);
   const [isChoosed, setIsChoosed] = useState(false);
   const [emptyField, setEmptyField] = useState(false);
@@ -44,6 +50,7 @@ const NewAccountNanny2Screen = ({ navigation, route }) => {
   const [checked, setChecked] = React.useState(false);
   const auth = FIREBASE_GET_AUTH;
   const db = FIRESTORE_DB;
+  const storage = FIREBASE_STORAGE;
 
   const [yearsOfExperience, setYearsOfExperience] = useState([
     { id: 0, nativePickerValue: "", pickerOpen: false, options: allYearsOfExperience },
@@ -223,6 +230,7 @@ const NewAccountNanny2Screen = ({ navigation, route }) => {
       !isAnyQualificationsPickerEmpty &&
       !isAnyLanguagesPickerEmpty &&
       !isAnyCertificationsPickerEmpty &&
+      desiredPosition.nativePickerValue &&
       nbrUploadedDoc === certifications.length &&
       nannyVideo;
     if (isValid) {
@@ -238,6 +246,18 @@ const NewAccountNanny2Screen = ({ navigation, route }) => {
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const userId = userCredential.user.uid;
+        const profilePhotoRef = ref(storage, `nannyProfilePics/${userId}.jpg`);
+        const nannyVideoRef = ref(storage, `nannyVideos/${userId}.mp4`);
+
+        const profilePhotoBlob = await fetch(profilePhoto).then(res => res.blob());
+        const nannyVideoBlob = await fetch(nannyVideo).then(res => res.blob());
+
+        await uploadBytes(profilePhotoRef, profilePhotoBlob);
+        await uploadBytes(nannyVideoRef, nannyVideoBlob);
+
+        const profilePhotoUrl = await getDownloadURL(profilePhotoRef);
+        const nannyVideoUrl = await getDownloadURL(nannyVideoRef);
+
         try {
           const userDoc = {
             userId,
@@ -247,7 +267,7 @@ const NewAccountNanny2Screen = ({ navigation, route }) => {
             nationality,
             mobileNumber,
             currentCity,
-            profilePhoto,
+            profilePhotoUrl: profilePhotoUrl || "",
             email,
             password,
             yearsOfExperience: yearsOfExperience.map(picker => picker.nativePickerValue),
@@ -255,7 +275,8 @@ const NewAccountNanny2Screen = ({ navigation, route }) => {
             qualifications: qualifications.map(picker => picker.nativePickerValue),
             languages: languages.map(picker => picker.nativePickerValue),
             certifications: certifications.map(picker => picker.nativePickerValue),
-            video: nannyVideo,
+            desiredPosition: desiredPosition.nativePickerValue,
+            nannyVideoUrl,
             role: "nanny",
           };
 
@@ -264,7 +285,7 @@ const NewAccountNanny2Screen = ({ navigation, route }) => {
           // setSnackbarMessage("Registration successful");
           // setSnackbarBackgroundColor("green");
           // setSnackbarVisible(true);
-          // navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
+          navigation.navigate("AuthScreen", { screen: "Signin Page" });
         } catch (firestoreError) {
           console.error("Error writing document: ", firestoreError);
           // setSnackbarMessage("Registration failed! Please try again.");
@@ -424,6 +445,46 @@ const NewAccountNanny2Screen = ({ navigation, route }) => {
               placeholder="Select Languages"
               errorText="Please select  the languages you speak"
             />
+            <Picker
+              placeholder="Desired Position"
+              style={[
+                styles.picker,
+                emptyField && !desiredPosition.nativePickerValue && styles.errorPicker,
+              ]}
+              useSafeArea
+              mode={Picker.modes.MULTI}
+              selectionLimit={2}
+              enableModalBlur={false}
+              value={desiredPosition.nativePickerValue}
+              onChange={nativePickerValue =>
+                setDesiredPosition(prevState => ({ ...prevState, pickerOpen: false, nativePickerValue }))
+              }
+              trailingAccessory={
+                <Entypo
+                  name={desiredPosition.pickerOpen ? "chevron-up" : "chevron-down"}
+                  size={30}
+                  color="black"
+                  style={{ position: "absolute", marginStart: 290, top: 10 }}
+                />
+              }
+              onPress={() => setDesiredPosition(prevState => ({ ...prevState, pickerOpen: true }))}
+              topBarProps={{
+                doneLabel: "Done",
+                cancelLabel: "Cancel",
+              }}
+              fieldType="filter"
+              items={allPositions.map(option => ({
+                value: option.value,
+                label: option.label,
+                disabled: option.disabled,
+                textStyle: {
+                  color: option.value === desiredPosition.nativePickerValue ? "#ff0000" : "#000000",
+                },
+              }))}
+            />
+            {emptyField && !desiredPosition.nativePickerValue && (
+              <Text style={styles.errorText}>Please select your desired position</Text>
+            )}
             <Button
               mode="contained-tonal"
               style={styles.imageUploadButton}
@@ -451,7 +512,7 @@ const NewAccountNanny2Screen = ({ navigation, route }) => {
               labelStyle={{ fontFamily: "FiraSansRegular", fontSize: 12 }}
               color="#FA89B8"
               size={26}
-              containerStyle={{ width: 320, marginBottom: 20 }}
+              containerStyle={{ width: 320, marginBottom: 22, marginTop: 15}}
               style={{
                 borderRadius: 3,
               }}

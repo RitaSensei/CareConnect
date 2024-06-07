@@ -73,22 +73,23 @@ const styles = StyleSheet.create({
   },
   cardCover: {
     position: "absolute",
-    left: -18,
+    left: -9,
     top: -2,
   },
   cardContent: {
     justifyContent: "space-evenly",
     alignSelf: "center",
-    paddingBottom: 5,
-    left: 38,
+    // paddingBottom: 1,
+    left: 22,
     bottom: 5,
-    marginLeft: 18,
+    marginLeft: 40,
   },
   nannyName: {
     fontFamily: "FiraSansMedium",
-    fontSize: 16,
+    fontSize: 15,
     color: "#000",
     alignSelf: "center",
+    marginBottom: 2,
   },
   nannyInformations: {
     fontFamily: "FiraSansRegular",
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
   },
   viewProfileButton: {
     borderRadius: 20,
-    width: "75%",
+    width: "70%",
     height: 40,
     position: "absolute",
     alignSelf: "center",

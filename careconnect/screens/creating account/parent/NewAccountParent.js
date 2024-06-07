@@ -116,7 +116,7 @@ const NewAccountParentScreen = ({ navigation }) => {
           confirmPassword: "",
           currentCity: { location: undefined, nativePickerValue: "", pickerOpen: false }
         });
-        navigation.navigate("User", { screen: "User Home Page" });
+        navigation.navigate("AuthScreen", { screen: "Signin Page" });
       } catch (firestoreError) {
         console.error("Error writing document: ", firestoreError);
         setSnackbarMessage("Registration failed! Please try again.");
@@ -199,13 +199,16 @@ const NewAccountParentScreen = ({ navigation }) => {
             inputMode="tel"
             mode="outlined"
             value={mobileNumber}
-            error={mobileNumberError || (emptyField && !mobileNumber)}
+            error={mobileNumberError || (emptyField && mobileNumber.trim() === "")}
             onChangeText={text => handleChange("mobileNumber", text)}
             style={styles.input}
           />
-          {mobileNumberError && <Text style={styles.errorText}>Please enter a valid mobile number</Text>}
-          {emptyField && !mobileNumber && <Text style={styles.errorText}>Please enter your mobile number</Text>}
-
+          {(mobileNumberError && (
+            <Text style={styles.errorText}>Please enter a valid mobile number</Text>
+          )) ||
+            (emptyField && mobileNumber.trim() === "" && (
+              <Text style={styles.errorText}>Please enter your mobile number</Text>
+            ))}
           <Picker
             placeholder="Current city"
             style={[
@@ -237,7 +240,6 @@ const NewAccountParentScreen = ({ navigation }) => {
             }))}
           />
           {emptyField && !currentCity.nativePickerValue && <Text style={styles.errorText}>Please select your current city</Text>}
-
           <Button
             mode="contained-tonal"
             style={styles.imageUploadButton}

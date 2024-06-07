@@ -13,12 +13,12 @@ export const renderProfile = ({ item }) => (
         alignItems: "center",
         flexDirection: "row",
         flex: 1,
-        width: 200,
+        width: 220,
       }}
     >
       <View style={styles.cardCover}>
         <Card.Cover
-          source={item.profilepic}
+          source={{ uri: item.profilePhotoUrl}}
           style={{
             // aspectRatio: 0.4,
             width: 80,
@@ -27,21 +27,7 @@ export const renderProfile = ({ item }) => (
             // overflow: "hidden",
           }}
         />
-        <View style={{ flexDirection: "row", alignItems: "center", left: 5, top: 8, width: 90 }}>
-          <FontAwesome6 name="coins" size={16} color="#B272A4" />
-          <Text
-            style={{
-              fontFamily: "FiraSansRegular",
-              fontSize: 11,
-              color: "#000",
-              textAlign: "center",
-              marginLeft: 5,
-            }}
-          >
-            {item["desired salary"][1]}
-          </Text>
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center", left: 5, top: 15, width: 90 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", left: 0, top: 8, width: 90 }}>
           <MaterialIcons name="place" size={16} color="#B272A4" />
           <Text
             style={{
@@ -49,27 +35,32 @@ export const renderProfile = ({ item }) => (
               fontSize: 11,
               color: "#000",
               textAlign: "center",
-              marginLeft: 5,
+              marginLeft: 2,
             }}
           >
-            {item["location"][1]}
+            {item.currentCity}
           </Text>
         </View>
       </View>
       <View>
         <Card.Content style={styles.cardContent}>
           <Paragraph style={styles.nannyName}>
-            <Text>{item.name[1]}</Text>
+            <Text>{item.firstName} {item.lastName}</Text>
           </Paragraph>
           <Paragraph style={styles.nannyInformations}>
-            {item.nationality[0]} : <Text style={{ color: "#000" }}>{item.nationality[1]}</Text>
+            {"Nationality : "}<Text style={{ color: "#000" }}>{item.nationality}</Text>
           </Paragraph>
           <Paragraph style={styles.nannyInformations}>
-            {item.experience[0]} : <Text style={{ color: "#000" }}>{item.experience[1]}</Text>
+            {"Experience : "}<Text style={{ color: "#000" }}>{item.yearsOfExperience}</Text>
           </Paragraph>
           <Paragraph style={styles.nannyInformations}>
-            {item["desired position"][0]} :{" "}
-            <Text style={{ color: "#000" }}>{item["desired position"][1]}</Text>
+            {"Desired position : "}
+            {item.desiredPosition.map((position, index) => (
+              <Text key={index} style={{ color: "#000" }}>
+                {position}
+                {index < item.desiredPosition.length - 1 ? ", " : ""}
+              </Text>
+            ))}
           </Paragraph>
         </Card.Content>
       </View>
