@@ -1,121 +1,36 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
+import { FIRESTORE_DB, FIREBASE_STORAGE } from "../../firebase/firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
 import { renderProfile } from "../../components/ProfilesList";
 import { CatalogComponent } from "../../components/CatalogComponent";
 
-const profileData = [
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Oumaima Nadir"],
-    nationality: ["Nationality", "Filipino"],
-    location: ["Location", "Tanger"],
-    experience: ["Experience", "3 years experience"],
-    "desired position": ["Desired position", "live-in, full-time position"],
-    "desired salary": ["Desired salary", "2000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Mary Gomez"],
-    nationality: ["Nationality", "Filipino"],
-    location: ["Location", "Tanger"],
-    experience: ["Experience", "3 years experience"],
-    "desired position": ["Desired position", "live-in, full-time position"],
-    "desired salary": ["Desired salary", "2000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Clara Almario"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  {
-    profilepic: require("../../assets/images/nanny_image.png"),
-    name: ["Name", "Ghita Loukili"],
-    nationality: ["Nationality", "Chinese"],
-    location: ["Location", "Rabat"],
-    experience: ["Experience", "5 years experience"],
-    "desired position": ["Desired position", "live-out, part-time position"],
-    "desired salary": ["Desired salary", "3000 MAD/month"],
-  },
-  // add more profile data here
-];
 
 const NanniesCatalogUserScreen = () => {
+  const [profileData, setProfileData] = useState([]);
+  const db = FIRESTORE_DB;
+  const storage = FIREBASE_STORAGE;
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "nannies"));
+        const profiles = await Promise.all(
+          querySnapshot.docs.map(async doc => {
+            const data = doc.data();
+            const profilePhotoUrl = await getDownloadURL(ref(storage, `nannyProfilePics/${data.userId}.jpg`));
+            return { id: doc.userId, ...data, profilePhotoUrl };
+          })
+        );
+        setProfileData(profiles);
+      } catch (error) {
+        console.error("Error fetching profiles: ", error);
+      }
+    };
+
+    fetchProfiles();
+  }, [db, storage]);
+
   return <CatalogComponent data={profileData} renderItem={renderProfile} />;
 };
 

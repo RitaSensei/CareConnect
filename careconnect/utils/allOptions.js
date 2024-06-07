@@ -284,34 +284,30 @@ export const allYearsOfExperience = [
 ];
 
 export const allChildAgeIntervals = [
-  { label: "Newborn (0-6 months)", value: "newborn" },
-  { label: "Infant (7-12 months)", value: "infant" },
-  { label: "Toddler (1-3 years)", value: "toddler" },
-  { label: "Preschooler (4-6 years)", value: "preschooler" },
-  { label: "School Age (7-12 years)", value: "school-age" },
-  { label: "Teenager (13+ years)", value: "teenager" },
+  { label: "Newborn (0- 12 months)", value: "newborn" },
+  { label: "Toddler (2-5 years)", value: "toddler" },
+  { label: "School Age (6-10 years)", value: "school-age" },
+  { label: "Teenager (11+ years)", value: "teenager" },
 ];
 
 export const allCertifications = [
-  { label: "CPR and First Aid", value: "cpr-first-aid" },
-  { label: "Childcare Training Course", value: "childcare-training" },
-  { label: "Early Childhood Education (ECE)", value: "ece" },
-  { label: "Nanny Certification", value: "nanny-certification" },
-  { label: "Water Safety Instructor (WSI)", value: "water-safety-instructor" },
+  { label: "CPR and First Aid Certification", value: "cpr-first-aid" },
+  { label: "Swim Instructor Certification", value: "swim-instructor" },
   { label: "Special Needs Care Training", value: "special-needs-care" },
-  { label: "Food Safety and Handling", value: "food-safety" },
-  { label: "Safe Sleep Practices", value: "safe-sleep" },
+  { label: "Food Safety and Nutrition Certification", value: "food-safety-nutrition" },
 ];
 
 export const allQualifications = [
-  { label: "High School Diploma or equivalent", value: "high-school-diploma" },
-  { label: "Child Development Associate (CDA) Credential", value: "cda-credential" },
-  { label: "Certifications in Child CPR and First Aid", value: "certifications-cpr-first-aid" },
-  { label: "Valid Driver's License and Clean Driving Record", value: "drivers-license" },
+  { label: "Strong Communication Skills", value: "strong-communication-skills" },
+  { label: "Punctuality and Reliability", value: "punctuality-reliability"},
+  { label: "Awaraness and Respect for Diverse Cutltural Backgrounds", value: "diverse-cultural-backgrounds" },
+  { label: "Famialiarity with Technology", value: "technology" },
+  { label: "Positive Attitude and Enthusiasm", value: "positive-attitude" },
 ];
 
 export const allLanguages = [
   { label: "English", value: "english" },
   { label: "French", value: "french" },
   { label: "Arabic", value: "arabic" },
+  { label: "Spanish", value: "spanish" },
 ];

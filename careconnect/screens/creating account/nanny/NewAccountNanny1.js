@@ -5,9 +5,9 @@ import * as ImagePicker from "expo-image-picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Picker } from "react-native-ui-lib";
 import { Entypo, Ionicons } from "@expo/vector-icons";
+import { allLocations, allNationalities } from "../../../utils/allOptions";
 
 import styles from "../styles";
-import { allLocations, allNationalities } from "../../../utils/allOptions";
 
 const NewAccountNanny1Screen = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
@@ -33,6 +33,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
     nativePickerValue: "",
     pickerOpen: false,
   });
+
   const [nationality, setNationality] = useState({
     nationality: undefined,
     nativePickerValue: "",
@@ -111,7 +112,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
 
   const handleProfilePhoto = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -138,7 +139,49 @@ const NewAccountNanny1Screen = ({ navigation }) => {
       !passwordError &&
       !confirmPasswordError
     ) {
-      navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" });
+        navigation.navigate("NewAccount", {
+          screen: "Nanny New Account Page 2",
+          params: {
+            firstName,
+            lastName,
+            dateOfBirth: date.toISOString().split("T")[0],
+            nationality:nationality.nativePickerValue,
+            mobileNumber,
+            currentCity: currentCity.nativePickerValue,
+            profilePhoto,
+            email,
+            password
+          },
+        });
+
+        // Reset all fields
+        setFirstName("");
+        setLastName("");
+        setDate(new Date());
+        setMobileNumber("");
+        setProfilePhoto(null);
+        setEmail("");
+        setPassword("");
+        setConfirmedPassword("");
+        setCurrentCity({
+          location: undefined,
+          nativePickerValue: "",
+          pickerOpen: false,
+        });
+        setNationality({
+          nationality: undefined,
+          nativePickerValue: "",
+          pickerOpen: false,
+        });
+        setEmptyField(false);
+        setValidDateField(false);
+        setMobileNumberError(false);
+        setProfilePhotoError(false);
+        setEmailError(false);
+        setPasswordError(false);
+        setConfirmedPasswordError(false);
+        setSecureTextEntry(true);
+        setSecureTextEntryBeta(true);
     } else {
       const profilePhotoError = !profilePhoto; // Check if profile photo is empty
       setEmptyField(true);
@@ -259,7 +302,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             }}
             fieldType="filter"
             items={allNationalities.map(option => ({
-              value: option.value,
+              value: option.label,
               label: option.label,
               disabled: option.disabled,
               textStyle: {
@@ -317,7 +360,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             }}
             fieldType="filter"
             items={allLocations.map(option => ({
-              value:option.value,
+              value:option.label,
               label:option.label,
               disabled:option.disabled,
               style:{
@@ -347,7 +390,7 @@ const NewAccountNanny1Screen = ({ navigation }) => {
           ) : (
             emptyField &&
             profilePhotoError && (
-              <Text style={styles.errorText}>Please upload your profile picture.</Text>
+              <Text style={styles.errorText}>Please upload your profile picture</Text>
             )
           )}
           <View>
@@ -440,9 +483,6 @@ const NewAccountNanny1Screen = ({ navigation }) => {
             buttonColor="#FA89B8"
             textColor="#fff"
             onPress={handleNext}
-            // onPress={() =>
-            //   navigation.navigate("NewAccount", { screen: "Nanny New Account Page 2" })
-            // }
           >
             <Text style={styles.nextButtonText}>Next</Text>
           </Button>

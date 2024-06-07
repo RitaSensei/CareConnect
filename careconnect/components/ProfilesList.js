@@ -18,7 +18,7 @@ export const renderProfile = ({ item }) => (
     >
       <View style={styles.cardCover}>
         <Card.Cover
-          source={item.profilepic}
+          source={{ uri: item.profilePhotoUrl }}
           style={{
             width: 120,
             height: 120,
@@ -28,14 +28,20 @@ export const renderProfile = ({ item }) => (
       <View>
         <Card.Content style={styles.cardContent}>
           <Paragraph style={styles.nannyName}>
-            <Text>{item.name[1]}</Text>
+            <Text>{item.firstName} {item.lastName}</Text>
           </Paragraph>
           <Paragraph style={styles.nannyInformations}>
-            <Text style={{ color: "#000" }}>{item.nationality[1]}</Text> {" | "}{" "}
-            <Text style={{ color: "#000" }}>{item.experience[1]}</Text>
+            <Text style={{ color: "#000" }}>{item.nationality}</Text> {" | "}{" "}
+            <Text style={{ color: "#000" }}>{item.yearsOfExperience}</Text>
           </Paragraph>
           <Paragraph style={styles.nannyInformations}>
-            <Text style={{ color: "#000" }}>{item["desired position"][1]}</Text>
+            {"Desired position : "}
+            {item.desiredPosition.map((position, index) => (
+              <Text key={index} style={{ color: "#000" }}>
+                {position}
+                {index < item.desiredPosition.length - 1 ? ", " : ""}
+              </Text>
+            ))}
           </Paragraph>
           <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
             <MaterialIcons name="place" size={18} color="#FA89B8" />
@@ -48,19 +54,7 @@ export const renderProfile = ({ item }) => (
                 marginRight: 20,
               }}
             >
-              {item["location"][1]}
-            </Text>
-            <FontAwesome6 name="coins" size={16} color="#FA89B8" />
-            <Text
-              style={{
-                fontFamily: "FiraSansRegular",
-                fontSize: 13,
-                color: "#000",
-                textAlign: "center",
-                marginLeft: 5,
-              }}
-            >
-              {item["desired salary"][1]}
+              {item.currentCity}
             </Text>
           </View>
         </Card.Content>

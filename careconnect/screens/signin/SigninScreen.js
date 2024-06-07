@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { TextInput, Button, Snackbar } from "react-native-paper";
 import { FIREBASE_GET_AUTH, FIRESTORE_DB } from "../../firebase/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-
+import { doc, getDoc } from "firebase/firestore";
 import styles from "./styles";
 
 const SigninScreen = ({ navigation }) => {
@@ -33,13 +33,38 @@ const SigninScreen = ({ navigation }) => {
     }
     try {
       // Sign in with Firebase Auth
-      await signInWithEmailAndPassword(auth,email, password);
-      setSnackbarMessage("Login successful");
-      setSnackbarBackgroundColor("green");
-      setSnackbarVisible(true);
-      setEmail("");
-      setPassword("");
-      navigation.navigate("User", { screen: "User Home Page" });
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userId = userCredential.user.uid;
+
+      // Fetch user document from the `nannies` collection
+      const nannyDocRef = doc(db, "nannies", userId);
+      const nannyDocSnapshot = await getDoc(nannyDocRef);
+
+      if (nannyDocSnapshot.exists()) {
+        // User is a nanny
+        setSnackbarMessage("Login successful");
+        setSnackbarBackgroundColor("green");
+        setSnackbarVisible(true);
+        setEmail("");
+        setPassword("");
+        navigation.navigate("Visitor", { screen: "Visitor Home Page" });
+      } else {
+        // Fetch user document from the `parents` collection
+        const parentDocRef = doc(db, "parents", userId);
+        const parentDocSnapshot = await getDoc(parentDocRef);
+
+        if (parentDocSnapshot.exists()) {
+          // User is a parent
+          setSnackbarMessage("Login successful");
+          setSnackbarBackgroundColor("green");
+          setSnackbarVisible(true);
+          setEmail("");
+          setPassword("");
+          navigation.navigate("User", { screen: "User Home Page" });
+        } else {
+          throw new Error("User document not found in either nannies or parents collection");
+        }
+      }
     } catch (error) {
       setSnackbarMessage("Login failed! Please check your credentials");
       setSnackbarBackgroundColor("red");

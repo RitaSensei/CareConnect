@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { SafeAreaView, View, ScrollView, Text, TouchableOpacity, Image } from "react-native";
 import { Switch } from "react-native-paper";
 import { Entypo, MaterialIcons, Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
-
+import { FIRESTORE_DB, FIREBASE_STORAGE } from "../../firebase/firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
 import styles from "./styles";
 
 const SettingsScreen = ({ navigation }) => {
+  const db = FIRESTORE_DB;
+  const storage = FIREBASE_STORAGE;
+  const [userProfileData, setUserProfileData] = useState([]);
   const [lightTheme, setLightTheme] = useState(true);
   const [form, setForm] = useState({
     emailNotifications: true,
@@ -15,6 +20,8 @@ const SettingsScreen = ({ navigation }) => {
   const onThemeChange = () => {
     setLightTheme(!lightTheme);
   };
+
+  
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

@@ -53,13 +53,13 @@ export const PickerComponent = ({
               }}
               fieldType="filter"
               items={item.options.map(option => ({
-                value:option.value,
+                value:option.label,
                 label:option.label,
                 disabled:option.disabled,
                 style:{
                     color: option.value === item.nativePickerValue ? "#ff0000" : "#000000",
                 },
-                multiline
+                // multiline
               }))}
             />
             {index === 0 && (

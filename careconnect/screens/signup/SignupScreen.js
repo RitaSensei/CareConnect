@@ -3,8 +3,6 @@ import { Text, View, Image } from "react-native";
 import { Button } from "react-native-paper";
 
 import styles from "./styles";
-import { NewAccountNanny } from "../creating account/nanny/NewAccountNanny1";
-import { NewAccountParent } from "../creating account/parent/NewAccountParent";
 
 const SignupScreen = ({ navigation }) => {
   return (
